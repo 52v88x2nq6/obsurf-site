@@ -127,7 +127,8 @@ html[data-demo] .honest-only{display:none}
 .faq span{color:var(--sub)}
 .faq a{text-decoration:underline;text-underline-offset:3px}
 /* footer */
-.foot{margin-top:80px;padding:28px 0 40px;border-top:1px solid var(--line2)}
+.foot{margin-top:80px;padding-bottom:40px}
+.foot .links{padding-top:28px;border-top:1px solid var(--line2)}
 .foot .links{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;font-size:14px}
 .foot .links a{color:var(--sub)}
 .foot .links a:hover,.foot .links a[aria-current]{color:var(--text)}
