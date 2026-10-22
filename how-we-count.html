@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How we count a lineup · ob.surf</title>
+<meta name="description" content="How ob.surf counts a lineup: ranges, certainty faces, rides once tested, and what we never do.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="How we count a lineup · ob.surf">
+<meta property="og:description" content="How ob.surf counts a lineup: ranges, certainty faces, rides once tested, and what we never do.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ob.surf/how-we-count.html">
+<link rel="canonical" href="https://ob.surf/how-we-count.html">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="banner" role="region" aria-label="Demo mode"><div class="wrap">
+  <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
+  <button type="button" class="demo-off">Turn off</button>
+</div></div>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<header class="nav wrap">
+  <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
+  <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html" aria-current="page">How we count</a><a href="roadmap.html">Roadmap</a></nav>
+  <div class="navr">
+    <button type="button" class="demo-switch" role="switch" aria-checked="false" aria-describedby="demo-hint"><span class="sw" aria-hidden="true"></span>Demo</button>
+    <a href="join.html" class="ghost sm">Join the beta</a>
+    <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="phead"><div class="m">ob.surf/how-we-count</div><h1>How we count a lineup</h1></div>
+  <article class="prose"><p>ob.surf shows how many people are in the water and, on days the camera can see the lineup, at each peak. Counts of ridden waves come once they're tested. Here is where those numbers come from, how sure we are of them, and what we never do.</p>
+<h2>1. A view becomes dots</h2>
+<p>We use cameras whose owners allow us to count from them.</p>
+<ul><li>Software looks at each frame for a moment and finds the people in the water and on the sand.</li>
+<li>Only the count leaves that step. We show no image.</li>
+<li>Where a camera's owner or a contributor allows it, we keep short clips to improve the counting. They are never shown and never used to recognise anyone.</li></ul>
+<h2>2. Next: dots on a drawn plan</h2>
+<ul><li>We're building this step. Each camera will be fitted to the beach using landmarks we survey on the ground, such as lamp posts, the end of a jetty or a lifeguard post, so that every person found becomes a point on our drawn plan of the beach, with coordinates. Until then, counts are per camera view.</li>
+<li>Far from the camera, a person is a few pixels tall, so points out there will carry a wider margin of error.</li>
+<li>Each day the camera finds the peaks from where surfers wait and rides start, and we check them by hand on sample windows. If no peaks form that day, you see one count for the whole view, marked <i>Lineup not seen today</i>.</li></ul>
+<h2>3. A range, not a number</h2>
+<ul><li>Some people are hidden behind a wave, and some are too small to see. So we show a range, such as <b>12–14 people</b>, worked out from how often the software finds people at that view when we check it by hand.</li>
+<li>The word in front, <b>Empty, Quiet, Busy or Packed</b>, tells you the gist at a glance.</li></ul>
+<h2>4. Rides: once tested</h2>
+<ul><li>A take-off lasts a second or two and is easy to miss from far away. We're testing ride counting now, and until it passes, ob.surf shows no ride number anywhere.</li>
+<li>After that, a ride count shows only at peaks the camera found that day, and only once we've checked at least five of that peak's rides by hand. It is shown as a floor we're confident of, not a guess at the total.</li>
+<li>Quieter peaks often show none.</li>
+<li>Never a ride rate for one surfer.</li></ul>
+<h2 id="faces">5. A face that says how sure we are</h2>
+<p>Every figure comes with one of four faces. A figure earns its face from this beach's own track record, not from where the data came from.</p>
+<table><tbody><tr><th><span class="fl"><svg class="face" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M7.2 13.2 Q12 19.6 16.8 13.2"/></svg>Sure</span></th><td>Fresh evidence from a method that has proved accurate at this beach: its past figures at this level were right at least three times in four, over at least 50 checks. Rare, and earned slowly.</td></tr><tr><th><span class="fl"><svg class="face" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M8.6 15.2 H15.4"/></svg>Fairly sure</span></th><td>Some evidence that agrees, or a usual pattern with a good record here. Right more often than not.</td></tr><tr><th><span class="fl"><svg class="face" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M7.6 16 q1.1 -1.8 2.2 0 t2.2 0 t2.2 0 t2.2 0"/></svg>Rough idea</span></th><td>Little evidence. Plan with it, don't rely on it.</td></tr><tr><th><span class="fl"><svg class="face" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7.7 10.2 h2.6 M13.7 10.2 h2.6"/></svg>Not enough data</span></th><td>We don't know yet, so we don't guess: you see a dash.</td></tr></tbody></table>
+<p>New beaches start at Rough idea. A camera's live count reaches Fairly sure once a stretch of its footage has been checked by hand. A usual figure reaches Fairly sure only after 150 of its past calls have been checked. Sure takes months of checked figures, so it's rare.</p>
+<h2>6. When there's no live count</h2>
+<ul><li><b>Usual crowd:</b> built from past counts on similar days and hours at that beach. The face says how well past figures like this one matched what actually happened.</li>
+<li><b>Recent reports:</b> what surfers on the beach told us in the last 90 minutes, shown once at least three different people have reported.</li></ul>
+<p>During the beta, usual figures and reports never go above Fairly sure.</p>
+<h2>7. How we check ourselves</h2>
+<ul><li>We count people and rides by hand on sample windows from each camera, and compare the software's figures with ours.</li>
+<li>Each version of the counting is frozen, then tested once on days set aside and labelled by hand before the software ever saw them. That keeps the published results honest.</li></ul>
+<p class="closed">We publish each beach's results here once they're checked. Until then, its figures stay at Rough idea at most.</p>
+<h2>8. What we never do</h2>
+<ul><li>We count people, not who they are. No faces, names or individual positions, and footage is never used to recognise anyone.</li>
+<li>We don't show camera pictures. To see the waves, follow the link to the camera owner's own page.</li>
+<li>ob.surf is not a safety service. Always follow the lifeguards' flags. In an emergency, call 112.</li></ul>
+<h2>Sources</h2>
+<p>We use custom algorithms based on data from multiple sources: public beach cameras, wave and weather data, tide data, and reports from surfers. The credits our data licences ask for are on the <a href="credits.html">Sources and credits</a> page.</p>
+<h2>Think a figure is wrong?</h2>
+<p>Tell us through the <a href="contact.html">contact page</a> under <b>Something's wrong in the app</b>. If it's about how we use data, choose <b>A concern about how we use data</b>.</p></article>
+</div>
+</main>
+<footer class="foot wrap">
+  <div class="links"><span style="font-weight:700;letter-spacing:-0.02em">ob.surf</span><a href="how-we-count.html" aria-current="page">How we count</a><a href="credits.html">Sources and credits</a><a href="roadmap.html">Roadmap</a><a href="request.html">Request a feature</a><a href="support.html">Support us</a><a href="privacy.html">Privacy</a><a href="legal.html">Legal notice</a><a href="safety.html">Safety</a><a href="contact.html">Contact</a><span class="m coord">43.4840° N 1.5590° W</span></div>
+  <p>ob.surf is in beta. Not a safety service: always follow the lifeguards' flags.</p>
+</footer>
+<div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

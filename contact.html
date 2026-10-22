@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact · ob.surf</title>
+<meta name="description" content="Write to ob.surf: questions, ideas, data requests, partnerships and safety issues.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Contact · ob.surf">
+<meta property="og:description" content="Write to ob.surf: questions, ideas, data requests, partnerships and safety issues.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ob.surf/contact.html">
+<link rel="canonical" href="https://ob.surf/contact.html">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="banner" role="region" aria-label="Demo mode"><div class="wrap">
+  <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
+  <button type="button" class="demo-off">Turn off</button>
+</div></div>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<header class="nav wrap">
+  <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
+  <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
+  <div class="navr">
+    <button type="button" class="demo-switch" role="switch" aria-checked="false" aria-describedby="demo-hint"><span class="sw" aria-hidden="true"></span>Demo</button>
+    <a href="join.html" class="ghost sm">Join the beta</a>
+    <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <div class="cw" style="margin-top:0">
+    <div>
+      <div class="phead"><div class="m">Contact</div><h1>Write to us.</h1><p>Pick what it's about and we'll only ask for what that needs.</p></div>
+      <div class="m" style="margin:18px 0 8px 2px">Before you write</div>
+      <div class="grpbox">
+        <a class="cell" href="index.html#questions"><span>Help answers<small>Most questions are answered there.</small></span><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        <a class="cell" href="roadmap.html"><span>Roadmap and requests<small>Ideas others can vote on.</small></span><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+      <div class="m" style="margin:22px 0 8px 2px" id="topic-l">What is it about?</div>
+      <div class="topics" role="radiogroup" aria-labelledby="topic-l"><label><input type="radio" name="topic" value="idea" checked>A question or idea</label><label><input type="radio" name="topic" value="wrong">Something's wrong in the app</label><label><input type="radio" name="topic" value="concern">A concern about how we use data</label><label><input type="radio" name="topic" value="data">My personal data: see, correct, delete or object</label><label><input type="radio" name="topic" value="image">An image of me</label><label><input type="radio" name="topic" value="copyright">Copyright: my footage or data</label><label><input type="radio" name="topic" value="illegal">Report illegal content</label><label><input type="radio" name="topic" value="camera">I own a camera or data source</label><label><input type="radio" name="topic" value="partnership">Partnership or press</label><label><input type="radio" name="topic" value="safety">A safety issue at a spot</label></div>
+    </div>
+    <div class="card" style="padding:26px;margin-top:28px">
+      <div class="closed honest-only" style="margin-bottom:18px">This form doesn't send anything yet. It opens once our privacy notice is published. Until then, email <a href="mailto:leo@ob.surf">leo@ob.surf</a>.</div>
+      <form class="form" data-nosend onsubmit="return false">
+        <div class="m" id="topic-name">A question or idea</div>
+        <div class="box" data-for="safety" hidden><b>This isn't an emergency line.</b><br>In an emergency, call 112.</div>
+        <div class="box" data-for="idea" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="flex:1 1 220px">Got an idea for a feature? Post it on the roadmap so others can vote.</span><a href="request.html" class="ghost sm">Request a feature <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+        <fieldset class="lockable form" disabled>
+          <div data-for="data" hidden><span class="lbl">Which right</span><div class="chips" role="group"><button type="button" aria-pressed="false">Access</button><button type="button" aria-pressed="false">Delete</button><button type="button" aria-pressed="false">Correct</button><button type="button" aria-pressed="false">Object</button><button type="button" aria-pressed="false">Restrict</button><button type="button" aria-pressed="false">Download a copy</button><button type="button" aria-pressed="false">Withdraw consent</button><button type="button" aria-pressed="false">Not sure</button></div></div>
+          <div data-for="safety image" hidden><label class="lbl" for="c-where">Where</label><input class="inp" id="c-where" autocomplete="off" placeholder="A spot, a link, or the “Report this” id"></div>
+          <div><label class="lbl" for="c-msg">Your message</label><textarea class="ta" id="c-msg" maxlength="5000" placeholder="10 to 5,000 characters."></textarea></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px">
+            <div><label class="lbl" for="c-email">Email</label><input class="inp" id="c-email" type="email" autocomplete="off" placeholder="So we can reply"></div>
+            <div><label class="lbl" for="c-name">Name <span>· optional</span></label><input class="inp" id="c-name" autocomplete="off" placeholder="How we should address you"></div>
+          </div>
+          <div><span class="lbl">On behalf of</span><div class="chips" role="group"><button type="button" aria-pressed="true">Myself</button><button type="button" aria-pressed="false">My child</button><button type="button" aria-pressed="false">My organisation</button><button type="button" aria-pressed="false">A client</button><button type="button" aria-pressed="false">Someone else</button></div></div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button type="button" class="ghost sm" data-send>Attach files</button><span class="note">Up to 5</span></div>
+          <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap"><p class="note" style="flex:1 1 260px">You'll get a case number now. We reply within 7 days, and settle requests about your personal data within one month at most.</p><button type="button" class="btn sm" data-send>Send</button></div>
+          <p class="note" data-for="data concern" hidden>You can also complain to your data protection authority. In France that's the CNIL (cnil.fr).</p>
+        </fieldset>
+        <div class="box strong">In an emergency, call 112.</div>
+      </form>
+    </div>
+  </div>
+</div>
+</main>
+<footer class="foot wrap">
+  <div class="links"><span style="font-weight:700;letter-spacing:-0.02em">ob.surf</span><a href="how-we-count.html">How we count</a><a href="credits.html">Sources and credits</a><a href="roadmap.html">Roadmap</a><a href="request.html">Request a feature</a><a href="support.html">Support us</a><a href="privacy.html">Privacy</a><a href="legal.html">Legal notice</a><a href="safety.html">Safety</a><a href="contact.html" aria-current="page">Contact</a><span class="m coord">43.4840° N 1.5590° W</span></div>
+  <p>ob.surf is in beta. Not a safety service: always follow the lifeguards' flags.</p>
+</footer>
+<div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

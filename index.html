@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ob.surf · the lineup, counted</title>
+<meta name="description" content="How many people are in the water at covered surf beaches, and your own Apple Watch sessions on a detailed beach map. Now in beta.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0A0A" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="ob.surf · the lineup, counted">
+<meta property="og:description" content="How many people are in the water at covered surf beaches, and your own Apple Watch sessions on a detailed beach map. Now in beta.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ob.surf/">
+<link rel="canonical" href="https://ob.surf/">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="banner" role="region" aria-label="Demo mode"><div class="wrap">
+  <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
+  <button type="button" class="demo-off">Turn off</button>
+</div></div>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<header class="nav wrap">
+  <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
+  <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
+  <div class="navr">
+    <button type="button" class="demo-switch" role="switch" aria-checked="false" aria-describedby="demo-hint"><span class="sw" aria-hidden="true"></span>Demo</button>
+    <a href="join.html" class="ghost sm">Join the beta</a>
+    <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <section class="hero" aria-label="Your coast">
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding:20px 0 8px">
+      <div>
+        <div class="m">ob.surf · beta · 43.48° N 1.56° W</div>
+        <h1 class="h1">The lineup, counted.</h1>
+        <p class="lede">How busy the lineup is, and how your own session went.</p>
+        <form class="search" style="margin-top:26px" role="search" action="spots.html" method="get">
+          <span class="sub" style="display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></span>
+          <label for="q" class="skip">Beach, town or postcode</label>
+          <input id="q" name="q" type="search" placeholder="Beach, town or postcode" autocomplete="off" enterkeyhint="search">
+          <button type="submit">Find</button>
+        </form>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px">
+          <a href="spots.html?near=1" class="locate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M20 4 3.5 11l7 2.5L13 20.5z"/></svg>Show beaches near me</a>
+          <span class="sub">Your location sorts the list once, in your browser. It isn't sent or stored.</span>
+        </div>
+        <div class="btnrow" style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a href="join.html" class="btn">Join the beta</a><a href="join.html#waitlist" class="ghost">Join a beach's waitlist</a></div>
+        <div class="sub" style="margin-top:12px;font-size:13px">In beta, starting with a few beaches in Anglet.</div>
+      </div>
+      <div style="margin-top:28px"><div class="lg" role="list" aria-label="Map legend"><span role="listitem"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true" style="flex:none;display:inline-block;vertical-align:middle"><circle cx="6" cy="6" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="6" cy="6" r="2.6" class="f-live"/></svg>Live</span><span role="listitem"><span class="dot rep" aria-hidden="true"></span>Recent reports</span><span role="listitem"><span class="dot usual" aria-hidden="true"></span>Usual</span><span role="listitem"><span class="dot wait" aria-hidden="true"></span>Not covered yet</span></div></div>
+    </div>
+    <div class="mapbox">
+      <div class="mapwrap">
+        <div class="mapwrap" data-swap="lmap"><svg viewBox="0 0 900 620" preserveAspectRatio="xMinYMid slice" role="img" aria-label="Drawn map of the coast from Seignosse to Hendaye with 17 beaches. None shows figures on the web yet; the beta starts with a few beaches in Anglet."><rect x="-50" y="-50" width="1000" height="720" class="f-sea"/><path d="M523 -10 L493 18 L487 51 L478 100 L456 182 L436 237 L392 294 L376 314 L374 324 L366 337 L359 348 L355 359 L348 379 L331 392 L323 398 L321 405 L312 428 L288 479 L264 501 L232 532 L210 556 L198 572 L180 566 L170 574 L120 585 L70 590 L39 594 L30 604 L8 616 L-24 640 L1000 700 L1000 -20 Z" class="f-sand"/><path d="M377 314 C 400 330, 420 352, 446 368 S 500 372, 580 360" fill="none" class="s-sea" stroke-width="5" stroke-linecap="round"/><path d="M0 547 H900" class="s-ring" stroke-opacity="0.05"/><path d="M14 547 H22" class="s-lab"/><text x="26" y="550" font-size="10" class="t-lab">43.40°N</text><path d="M0 365 H900" class="s-ring" stroke-opacity="0.05"/><path d="M14 365 H22" class="s-lab"/><text x="26" y="368" font-size="10" class="t-lab">43.50°N</text><path d="M0 182 H900" class="s-ring" stroke-opacity="0.05"/><path d="M14 182 H22" class="s-lab"/><text x="26" y="186" font-size="10" class="t-lab">43.60°N</text><path d="M145 0 V620" class="s-ring" stroke-opacity="0.05"/><path d="M145 612 V620" class="s-lab"/><text x="149" y="614" font-size="10" class="t-lab">1.70°W</text><path d="M277 0 V620" class="s-ring" stroke-opacity="0.05"/><path d="M277 612 V620" class="s-lab"/><text x="281" y="614" font-size="10" class="t-lab">1.60°W</text><path d="M409 0 V620" class="s-ring" stroke-opacity="0.05"/><path d="M409 612 V620" class="s-lab"/><text x="413" y="614" font-size="10" class="t-lab">1.50°W</text><text x="535" y="64" font-size="12" class="t-town">Hossegor</text><text x="528" y="109" font-size="12" class="t-town">Capbreton</text><text x="442" y="379" font-size="12" class="t-town">Bayonne</text><text x="363" y="419" font-size="12" class="t-town">Biarritz</text><text x="323" y="483" font-size="12" class="t-town">Bidart</text><text x="224" y="583" font-size="12" class="t-town">Saint-Jean-de-Luz</text><text x="66" y="609" font-size="12" class="t-town">Hendaye</text><circle cx="387.2" cy="317.2" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="380.6" cy="324.5" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="372.7" cy="337.3" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="366.1" cy="348.2" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="362.1" cy="359.1" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="359.5" cy="370.1" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="355.5" cy="379.2" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="338.3" cy="393.8" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="327.7" cy="404.7" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="294.7" cy="479.4" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="270.9" cy="501.3" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="494.3" cy="51.0" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="485.1" cy="100.3" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="499.6" cy="18.2" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="442.8" cy="237.0" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="200.8" cy="568.8" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="46.2" cy="594.3" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><path d="M346 317 h-6 V379 h6" fill="none" class="s-lab" stroke-width="1"/><text x="332" y="352" text-anchor="end" font-size="12" font-weight="600" class="t-text">Anglet · the beta starts here</text></svg></div><template data-demo="lmap"><svg viewBox="0 0 900 620" preserveAspectRatio="xMinYMid slice" role="img" aria-label="Example map of the coast from Seignosse to Hendaye: seven beaches live in Anglet, two with recent reports and two with the usual pattern around Biarritz and Bidart, six not covered yet. Illustration, not data."><rect x="-50" y="-50" width="1000" height="720" class="f-sea"/><path d="M523 -10 L493 18 L487 51 L478 100 L456 182 L436 237 L392 294 L376 314 L374 324 L366 337 L359 348 L355 359 L348 379 L331 392 L323 398 L321 405 L312 428 L288 479 L264 501 L232 532 L210 556 L198 572 L180 566 L170 574 L120 585 L70 590 L39 594 L30 604 L8 616 L-24 640 L1000 700 L1000 -20 Z" class="f-sand"/><path d="M377 314 C 400 330, 420 352, 446 368 S 500 372, 580 360" fill="none" class="s-sea" stroke-width="5" stroke-linecap="round"/><path d="M0 547 H900" class="s-ring" stroke-opacity="0.05"/><path d="M14 547 H22" class="s-lab"/><text x="26" y="550" font-size="10" class="t-lab">43.40°N</text><path d="M0 365 H900" class="s-ring" stroke-opacity="0.05"/><path d="M14 365 H22" class="s-lab"/><text x="26" y="368" font-size="10" class="t-lab">43.50°N</text><path d="M0 182 H900" class="s-ring" stroke-opacity="0.05"/><path d="M14 182 H22" class="s-lab"/><text x="26" y="186" font-size="10" class="t-lab">43.60°N</text><path d="M145 0 V620" class="s-ring" stroke-opacity="0.05"/><path d="M145 612 V620" class="s-lab"/><text x="149" y="614" font-size="10" class="t-lab">1.70°W</text><path d="M277 0 V620" class="s-ring" stroke-opacity="0.05"/><path d="M277 612 V620" class="s-lab"/><text x="281" y="614" font-size="10" class="t-lab">1.60°W</text><path d="M409 0 V620" class="s-ring" stroke-opacity="0.05"/><path d="M409 612 V620" class="s-lab"/><text x="413" y="614" font-size="10" class="t-lab">1.50°W</text><text x="535" y="64" font-size="12" class="t-town">Hossegor</text><text x="528" y="109" font-size="12" class="t-town">Capbreton</text><text x="442" y="379" font-size="12" class="t-town">Bayonne</text><text x="363" y="419" font-size="12" class="t-town">Biarritz</text><text x="323" y="483" font-size="12" class="t-town">Bidart</text><text x="224" y="583" font-size="12" class="t-town">Saint-Jean-de-Luz</text><text x="66" y="609" font-size="12" class="t-town">Hendaye</text><circle cx="387.2" cy="317.2" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="387.2" cy="317.2" r="2.6" class="f-live"/><circle cx="380.6" cy="324.5" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="380.6" cy="324.5" r="2.6" class="f-live"/><circle cx="372.7" cy="337.3" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="372.7" cy="337.3" r="2.6" class="f-live"/><circle cx="366.1" cy="348.2" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="366.1" cy="348.2" r="2.6" class="f-live"/><circle cx="362.1" cy="359.1" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="362.1" cy="359.1" r="2.6" class="f-live"/><circle cx="359.5" cy="370.1" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="359.5" cy="370.1" r="2.6" class="f-live"/><circle cx="355.5" cy="379.2" r="5.2" class="f-none s-live" stroke-width="1.6"/><circle cx="355.5" cy="379.2" r="2.6" class="f-live"/><circle cx="338.3" cy="393.8" r="5" class="f-sand s-ring" stroke-width="1.5"/><path d="M338.3 388.8 A5 5 0 0 1 338.3 398.8 Z" class="f-ring"/><circle cx="327.7" cy="404.7" r="5" class="f-ring"/><circle cx="294.7" cy="479.4" r="5" class="f-ring"/><circle cx="270.9" cy="501.3" r="5" class="f-sand s-ring" stroke-width="1.5"/><path d="M270.9 496.3 A5 5 0 0 1 270.9 506.3 Z" class="f-ring"/><circle cx="494.3" cy="51.0" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="485.1" cy="100.3" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="499.6" cy="18.2" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="442.8" cy="237.0" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="200.8" cy="568.8" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><circle cx="46.2" cy="594.3" r="4.5" class="f-sand s-lab" stroke-width="1.5"/><path d="M346 317 h-6 V379 h6" fill="none" class="s-lab" stroke-width="1"/><text x="332" y="352" text-anchor="end" font-size="12" font-weight="600" class="t-text">Anglet · 7 live</text><circle cx="338.3" cy="393.8" r="10.5" fill="none" class="s-ring" stroke-width="1.5"/><g class="hide-s" aria-hidden="true"><path d="M284.7 479.4 l-8 -6 v12 z" class="f-card"/><rect x="30.7" y="445.4" width="252" height="68" rx="12" class="f-card s-line"/><text x="42.7" y="467.4" font-size="13" font-weight="600" class="t-text">Bidart · Recent reports</text><text x="42.7" y="485.4" font-size="12" class="t-sub">No live count, but surfers reported here</text><text x="42.7" y="501.4" font-size="12" class="t-sub">in the last 90 minutes.</text></g></svg></template>
+        <div class="gl m pill hide-s" style="right:20px;top:20px;letter-spacing:0.06em">Seignosse to Hendaye · 17 beaches</div>
+      </div>
+      <div class="bcard gl" data-swap="lcard"><div class="m">The beta</div>
+      <div style="margin-top:8px;font-size:20px;font-weight:700;letter-spacing:-0.01em;line-height:1.2">No beach shows figures on the web yet.</div>
+      <p class="sub" style="margin:10px 0 0;font-size:14px;line-height:1.45">The beta starts with a few beaches in Anglet. A beach shows its crowd here once its counts have been checked by hand. Until then we show no number, rather than a guess.</p>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px"><svg class="face" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7.7 10.2 h2.6 M13.7 10.2 h2.6"/></svg><span style="font-size:14px">Not enough data</span></div>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><a href="how-we-count.html" class="ghost sm" style="flex:1">How we count</a><button type="button" class="ghost sm demo-on" style="flex:1">Show an example</button></div></div><template data-demo="lcard"><div style="margin-bottom:10px"><span class="tag">Illustration, not data</span></div><div style="font-size:20px;font-weight:700">Grande Plage <span style="font-weight:400;color:var(--sub)">· Biarritz</span></div>
+      <div class="m" style="margin-top:3px">43.4840° N 1.5590° W</div>
+      <div class="seg" style="margin-top:12px" role="group" aria-label="Data"><span aria-disabled="true" style="opacity:0.5">Now</span><span class="on">Usual</span></div>
+      <div class="sub" style="margin-top:12px;font-size:13px;line-height:1.4">No live count right now. This is the usual crowd for a Tuesday at 14:00.</div>
+      <div style="margin-top:14px;display:flex;align-items:baseline;gap:8px"><span class="m">Usually</span><span style="font-size:40px;font-weight:600;letter-spacing:-0.03em;line-height:1">Busy</span><span style="font-size:15px;color:var(--sub)">8–12 people</span></div>
+      <div style="margin-top:6px;font-size:14px">Whole view. No usual peaks for this day and time yet.</div>
+      <div style="margin-top:14px"><div class="bars" role="img" aria-label="Example: the usual crowd by hour from 08:00 to 17:00, busiest around noon. Illustration, not data."><div><i class="" style="height:10px"></i><span class="m">08</span></div><div><i class="" style="height:20px"></i><span class="m">09</span></div><div><i class="" style="height:35px"></i><span class="m">10</span></div><div><i class="" style="height:50px"></i><span class="m">11</span></div><div><i class="" style="height:60px"></i><span class="m">12</span></div><div><i class="" style="height:55px"></i><span class="m">13</span></div><div><i class="now" style="height:50px"></i><span class="m">14</span></div><div><i class="" style="height:45px"></i><span class="m">15</span></div><div><i class="" style="height:35px"></i><span class="m">16</span></div><div><i class="" style="height:20px"></i><span class="m">17</span></div></div></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px"><svg class="face" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M7.6 16 q1.1 -1.8 2.2 0 t2.2 0 t2.2 0 t2.2 0"/></svg><span style="font-size:14px">Rough idea</span><a href="how-we-count.html#faces" class="m ul" style="margin-left:auto">What these faces mean</a></div>
+      <a href="spots.html" class="ghost" style="margin-top:14px;width:100%;height:40px">See all beaches</a></template>
+    </div>
+  </section>
+
+  <section aria-labelledby="what-h" class="sec">
+    <h2 id="what-h" style="margin-bottom:20px">The numbers behind the surf cam</h2>
+    <div class="three">
+      <div><span class="m">Live · Usual</span><h3>Per peak, not per beach.</h3><p>Live, the people in the water, peak by peak when the camera can see the lineup. Rides come once tested. Usually, the crowd for this day and time.</p></div>
+      <div><span class="m">Apple Watch</span><h3>Your session, on the plan.</h3><p>Surf with Apple Watch and see your time in the water, distance and top speed on a detailed plan of the beach, next to the lineup's numbers.</p></div>
+      <div><span class="m">Certainty</span><h3>Honest about what it knows.</h3><p>Ranges and a certainty face on every figure. When we don't know, we say so.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="sure-h" class="sec two" style="margin-top:72px;align-items:center">
+    <div>
+      <h2 id="sure-h">How sure we are</h2>
+      <p class="sub" style="margin:12px 0 0;font-size:17px;line-height:1.5">Four faces, always with their word. We never show a percentage we can't back up, and when there's not enough data we show no number at all.</p>
+    </div>
+    <div class="card faces"><div><svg class="face" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M7.2 13.2 Q12 19.6 16.8 13.2"/></svg><span>Sure</span></div><div><svg class="face" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M8.6 15.2 H15.4"/></svg><span>Fairly sure</span></div><div><svg class="face" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="9.6" r="0.9" fill="currentColor" stroke="none"/><path d="M7.6 16 q1.1 -1.8 2.2 0 t2.2 0 t2.2 0 t2.2 0"/></svg><span>Rough idea</span></div><div><svg class="face" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7.7 10.2 h2.6 M13.7 10.2 h2.6"/></svg><span>Not enough data</span></div></div>
+  </section>
+
+  <section aria-labelledby="ws-h" class="sec two rev">
+    <div>
+      <h2 id="ws-h" class="big" style="font-size:56px;letter-spacing:-0.035em;line-height:1">Watch, your stats.</h2>
+      <p class="sub" style="margin:16px 0 0;font-size:19px;line-height:1.45;max-width:600px">Start a session on Apple Watch. Afterwards, see your time in the water, the distance you paddled and rode, and your top speed on the beach plan, and how your session compares with the lineup that day.</p>
+      <p class="sub" style="margin:10px 0 0;font-size:13px">Heart rate and other health data stay on your iPhone.</p>
+    </div>
+    <div data-swap="lwatch"><div class="m">Your session · after you surf</div>
+        <div class="ro" style="margin-top:10px">
+          <div><div class="m">In the water</div><div class="n sub">–</div></div>
+          <div><div class="m">Distance</div><div class="n sub">–</div></div>
+          <div><div class="m">Top speed</div><div class="n sub">–</div></div>
+        </div>
+        <p class="note" style="margin-top:10px">Filled in by the app after a session recorded on Apple Watch.</p></div><template data-demo="lwatch"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="m">Tue 21 Oct · Club · 16:42–18:06</span><span class="tag">Illustration, not data</span></div>
+        <div class="ro" style="margin-top:10px">
+          <div><div class="m">In the water</div><div class="n">1:24</div></div>
+          <div><div class="m">Distance</div><div class="n">~1.8<small> km</small></div></div>
+          <div><div class="m">Top speed</div><div class="n">~24<small> km/h</small></div></div>
+        </div></template>
+  </section>
+
+  <section aria-labelledby="fair-h" class="sec two" style="padding-top:28px;border-top:1px solid var(--line2)">
+    <h2 id="fair-h">We count people,<br>not who they are.</h2>
+    <div>
+      <p style="margin:0;font-size:19px;line-height:1.5">ob.surf turns camera views into numbers. We don't show anyone's face or position. We keep footage only where its owner allows it, and only to improve the counts. To watch, we link to the owner's own page. Every figure says roughly where it comes from.</p>
+      <a href="how-we-count.html" class="ul" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:600">How we count a lineup</a>
+    </div>
+  </section>
+
+  <section aria-label="Take part, partners and coverage" class="sec cards3" style="margin-top:72px">
+    <div class="card">
+      <h2>Help us count the coast</h2>
+      <p>Surfers, camera owners, drone pilots, surf schools and towns can all help: a quick report from the beach, footage you own, or a camera view we may use.</p>
+      <a href="support.html" class="btn">Ways to help</a>
+    </div>
+    <div class="card">
+      <h2>Run a beach, a school or a camera?</h2>
+      <p>We make occupancy reports for towns and tourism offices, planning tools for surf schools, and counts for camera owners' own pages.</p>
+      <a href="contact.html?topic=partnership" class="ghost">Talk to us</a>
+    </div>
+    <div class="card">
+      <h2>Starting on the Basque coast</h2>
+      <p>The beta covers a few beaches in Anglet. Everywhere else, join a beach's waitlist: the beaches with the longest lists open next.</p>
+      <a href="spots.html" class="ghost">Find your beach</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="faq-h" class="sec two" id="questions">
+    <h2 id="faq-h">Questions</h2>
+    <div class="faq">
+      <div><b>Which beaches are covered?</b><span>None on the web yet. The beta starts with a few beaches on the Basque coast, in Anglet, and the map will show which ones are live.</span></div>
+      <div><b>Where do the numbers come from?</b><span>From our own algorithms, built on data from multiple sources.</span></div>
+      <div><b>Do you show camera video?</b><span>Only where the camera's owner has cleared it. Otherwise we link to the owner's own page.</span></div>
+      <div><b>Do you identify surfers?</b><span>No. We count people. We show no faces, names or individual positions, and we never use footage to recognise anyone.</span></div>
+      <div><b>Do I need an Apple Watch?</b><span>Not to check a beach. You need one to record your own sessions.</span></div>
+      <div><b>What about Android and Garmin?</b><span>They're on our <a href="roadmap.html">roadmap</a>, under Later.</span></div>
+      <div><b>How accurate are the numbers?</b><span>Each figure carries a certainty face, earned from how well our counts have matched at that beach. If one looks wrong, tap the face and tell us.</span></div>
+      <div><b>What happens to my data?</b><span>Your sessions are yours. Export or delete them any time from the app. This website keeps nothing about you: see <a href="privacy.html">Privacy</a>.</span></div>
+      <div><b>What is Demo?</b><span>A switch at the top of every page. It fills the pages with example figures, each marked "Illustration, not data", so you can see what a beach will look like. Nothing in it is real.</span></div>
+    </div>
+  </section>
+</div>
+</main>
+<footer class="foot wrap">
+  <div class="links"><span style="font-weight:700;letter-spacing:-0.02em">ob.surf</span><a href="how-we-count.html">How we count</a><a href="credits.html">Sources and credits</a><a href="roadmap.html">Roadmap</a><a href="request.html">Request a feature</a><a href="support.html">Support us</a><a href="privacy.html">Privacy</a><a href="legal.html">Legal notice</a><a href="safety.html">Safety</a><a href="contact.html">Contact</a><span class="m coord">43.4840° N 1.5590° W</span></div>
+  <p>ob.surf is in beta. Not a safety service: always follow the lifeguards' flags.</p>
+</footer>
+<div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
