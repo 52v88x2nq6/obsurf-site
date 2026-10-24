@@ -23,7 +23,8 @@
   <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
   <button type="button" class="demo-off">Turn off</button>
 </div></div>
-<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<p id="demo-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Figures are examples; forms do not send anything.</p>
 <header class="nav wrap">
   <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
   <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
@@ -33,7 +34,7 @@
     <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
   </div>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 <div class="wrap">
   <div class="phead"><div class="m">ob.surf/support</div><h1>Support us</h1><p>ob.surf is a small, independent beta. The best help is your eyes on the lineup and your ideas.</p></div>
   <section class="ways" aria-label="Ways to help"><div class="card"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg></span><h2>Share ob.surf</h2><p>Send the link to someone who surfs.</p><button type="button" class="ghost sm" data-copy="https://ob.surf">Copy link</button></div><div class="card"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 9c2 0 2-1.5 4.5-1.5S9.5 9 12 9s2-1.5 4.5-1.5S18.5 9 21 9M3 15c2 0 2-1.5 4.5-1.5S9.5 15 12 15s2-1.5 4.5-1.5S18.5 15 21 15"/><circle cx="8" cy="4" r="1" fill="currentColor"/><circle cx="14" cy="4.5" r="1" fill="currentColor"/></svg></span><h2>Report the lineup</h2><p>Five quick questions from the beach.</p><p class="note">From the app, once the beta opens.</p></div><div class="card"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5" stroke-linecap="round"/></svg></span><h2>Send feedback</h2><p>Something looks wrong, or you have an idea.</p><a href="contact.html" class="ghost sm">Contact us</a></div><div class="card"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 13.5 12 10l3.5 3.5"/></svg></span><h2>Me too on the roadmap</h2><p>Say “Me too” to what you want next.</p><a href="roadmap.html" class="ghost sm">See the roadmap</a></div></section>

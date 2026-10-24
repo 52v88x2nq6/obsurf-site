@@ -23,7 +23,8 @@
   <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
   <button type="button" class="demo-off">Turn off</button>
 </div></div>
-<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<p id="demo-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Figures are examples; forms do not send anything.</p>
 <header class="nav wrap">
   <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
   <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
@@ -33,14 +34,14 @@
     <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
   </div>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 <div class="wrap">
   <div class="phead"><div class="m">ob.surf/privacy</div><h1>Privacy</h1></div>
   <article class="prose"><p>This page covers this website only. The privacy notice for the app and for accounts is published here before sign-up opens.</p>
 <h2>What this website keeps</h2>
-<ul><li><b>Nothing about you.</b> No cookies, no analytics, no trackers, no ads, and nothing loaded from other sites.</li>
+<ul><li><b>No analytics or trackers.</b> We use no cookies or ads, and load no resources from other sites.</li>
 <li><b>Forms send nothing.</b> The contact, request and waitlist forms are not connected yet. What you type stays on your screen.</li>
-<li><b>One setting in your browser.</b> Whether Demo is on is stored on your own device, so it stays on as you move between pages. Turn it off, or clear this site's data, to remove it.</li>
+<li><b>One setting in your browser.</b> Whether Demo is on is stored on your own device, so it stays consistent as you move between pages. Turn Demo off to change the preference; clear this site's data to remove the stored setting.</li>
 <li><b>Your location, only if you ask.</b> "Show beaches near me" asks your browser for your location to sort the list once. It stays in your browser: we never receive or store it.</li></ul>
 <h2>Our host</h2>
 <p>Like any website, the company that hosts these pages keeps short technical logs, such as IP addresses and the pages requested, to deliver and protect the site. Its details are in the <a href="legal.html">Legal notice</a>.</p>

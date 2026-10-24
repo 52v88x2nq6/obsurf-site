@@ -23,7 +23,8 @@
   <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
   <button type="button" class="demo-off">Turn off</button>
 </div></div>
-<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<p id="demo-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Figures are examples; forms do not send anything.</p>
 <header class="nav wrap">
   <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
   <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
@@ -33,22 +34,22 @@
     <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
   </div>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 <div class="wrap narrow" style="margin-left:auto;margin-right:auto">
-  <div class="phead"><div class="m">ob.surf/join</div><h1>Join the beta</h1><p>The beta is small and private for now, starting with a few beaches in Anglet. Sign in with Apple, ChatGPT or email, pick your beaches, and we'll let you in when it's your turn.</p></div>
+  <div class="phead"><div class="m">ob.surf/join</div><h1>Join the beta</h1><p>The beta is small and private for now, starting with a few beaches in Anglet. Sign-up isn't open yet. When it opens, this page will say how to join.</p></div>
   <section id="waitlist" aria-labelledby="wl-h" style="margin-top:24px">
     <h2 id="wl-h" class="m" style="font-weight:400;margin:0 0 10px">Waitlist</h2>
     <div data-swap="join"><div class="closed">Sign-up isn't open yet, so there's nothing to fill in. It opens on this page once our privacy notice is published.</div></div><template data-demo="join"><div class="demo-block card" style="padding:26px;margin-top:8px"><span class="tag" style="position:absolute;right:14px;top:-9px;background:var(--bg)">Illustration, not data</span>
       <form class="form" data-nosend onsubmit="return false">
         <div><span class="lbl">Beaches you surf</span><div class="chips" role="group" aria-label="Beaches"><button type="button" aria-pressed="false">La Barre</button><button type="button" aria-pressed="true">Les Cavaliers</button><button type="button" aria-pressed="false">Océan</button><button type="button" aria-pressed="true">VVF</button><button type="button" aria-pressed="false">Club</button><button type="button" aria-pressed="false">Sables d'Or</button><button type="button" aria-pressed="false">Marinella</button><button type="button" aria-pressed="false">Grande Plage</button></div></div>
-        <div><span class="lbl">Your devices</span><div class="chips" role="group"><button type="button" aria-pressed="true">iPhone</button><button type="button" aria-pressed="false">Apple Watch</button><button type="button" aria-pressed="false">Android</button><button type="button" aria-pressed="false">Garmin</button></div></div>
-        <div><span class="lbl">Age</span><div class="chips" role="group"><button type="button" aria-pressed="false">16 or 17</button><button type="button" aria-pressed="true">18 and over</button></div></div>
+        <div><span class="lbl">Your devices</span><div class="chips" role="group" aria-label="Your devices"><button type="button" aria-pressed="true">iPhone</button><button type="button" aria-pressed="false">Apple Watch</button><button type="button" aria-pressed="false">Android</button><button type="button" aria-pressed="false">Garmin</button></div></div>
+        <div><span class="lbl">Age</span><div class="chips" role="group" aria-label="Age"><button type="button" aria-pressed="false">16 or 17</button><button type="button" aria-pressed="true">18 and over</button></div></div>
         <div><label class="lbl" for="j-email">Email</label><input class="inp" id="j-email" type="email" autocomplete="off" placeholder="We'll write when it's your turn"></div>
         <label class="note" style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" style="margin-top:2px">Email me when my beach opens in the beta.</label>
         <label class="note" style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" style="margin-top:2px">Also send me news about ob.surf. Unsubscribe in one tap.</label>
         <div style="display:flex;justify-content:flex-end"><button type="button" class="btn" data-send>Join the list</button></div>
       </form></div></template>
-    <p class="note" style="margin-top:14px">Beaches with the longest lists open next. Want to see what a beach will look like? Turn on Demo at the top of the page.</p>
+    <p class="note" style="margin-top:14px">Once waitlists open, the beaches with the longest lists will open first. Want to see what a beach will look like? Turn on Demo at the top of the page.</p>
   </section>
 </div>
 </main>

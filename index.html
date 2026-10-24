@@ -23,7 +23,8 @@
   <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
   <button type="button" class="demo-off">Turn off</button>
 </div></div>
-<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<p id="demo-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Figures are examples; forms do not send anything.</p>
 <header class="nav wrap">
   <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
   <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
@@ -33,7 +34,7 @@
     <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
   </div>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 <div class="wrap">
   <section class="hero" aria-label="Your coast">
     <div style="display:flex;flex-direction:column;justify-content:space-between;padding:20px 0 8px">
@@ -81,7 +82,7 @@
     <h2 id="what-h" style="margin-bottom:20px">The numbers behind the surf cam</h2>
     <div class="three">
       <div><span class="m">Live · Usual</span><h3>Per peak, not per beach.</h3><p>Live, the people in the water, peak by peak when the camera can see the lineup. Rides come once tested. Usually, the crowd for this day and time.</p></div>
-      <div><span class="m">Apple Watch</span><h3>Your session, on the plan.</h3><p>Surf with Apple Watch and see your time in the water, distance and top speed on a detailed plan of the beach, next to the lineup's numbers.</p></div>
+      <div><span class="m">Apple Watch</span><h3>Your session, on the plan.</h3><p>We are testing Apple Watch session recording. The aim is to show your time in the water, distance and top speed on a beach plan.</p></div>
       <div><span class="m">Certainty</span><h3>Honest about what it knows.</h3><p>Ranges and a certainty face on every figure. When we don't know, we say so.</p></div>
     </div>
   </section>
@@ -97,8 +98,8 @@
   <section aria-labelledby="ws-h" class="sec two rev">
     <div>
       <h2 id="ws-h" class="big" style="font-size:56px;letter-spacing:-0.035em;line-height:1">Watch, your stats.</h2>
-      <p class="sub" style="margin:16px 0 0;font-size:19px;line-height:1.45;max-width:600px">Start a session on Apple Watch. Afterwards, see your time in the water, the distance you paddled and rode, and your top speed on the beach plan, and how your session compares with the lineup that day.</p>
-      <p class="sub" style="margin:10px 0 0;font-size:13px">Heart rate and other health data stay on your iPhone.</p>
+      <p class="sub" style="margin:16px 0 0;font-size:19px;line-height:1.45;max-width:600px">We are testing Apple Watch session recording. A beach plan and comparisons with the lineup are still in development.</p>
+      <p class="sub" style="margin:10px 0 0;font-size:13px">How the app handles your data will be explained before sign-up opens.</p>
     </div>
     <div data-swap="lwatch"><div class="m">Your session · after you surf</div>
         <div class="ro" style="margin-top:10px">
@@ -106,7 +107,7 @@
           <div><div class="m">Distance</div><div class="n sub">–</div></div>
           <div><div class="m">Top speed</div><div class="n sub">–</div></div>
         </div>
-        <p class="note" style="margin-top:10px">Filled in by the app after a session recorded on Apple Watch.</p></div><template data-demo="lwatch"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="m">Tue 21 Oct · Club · 16:42–18:06</span><span class="tag">Illustration, not data</span></div>
+        <p class="note" style="margin-top:10px">Preview of the session summary we are testing.</p></div><template data-demo="lwatch"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="m">Tue 21 Oct · Club · 16:42–18:06</span><span class="tag">Illustration, not data</span></div>
         <div class="ro" style="margin-top:10px">
           <div><div class="m">In the water</div><div class="n">1:24</div></div>
           <div><div class="m">Distance</div><div class="n">~1.8<small> km</small></div></div>
@@ -117,7 +118,7 @@
   <section aria-labelledby="fair-h" class="sec two" style="padding-top:28px;border-top:1px solid var(--line2)">
     <h2 id="fair-h">We count people,<br>not who they are.</h2>
     <div>
-      <p style="margin:0;font-size:19px;line-height:1.5">ob.surf turns camera views into numbers. We show no faces and no identities: people appear only as anonymous dots or counts. We'll keep footage only where its owner allows it, and only to improve the counts. To watch, we link to the owner's own page. Every figure says roughly where it comes from.</p>
+      <p style="margin:0;font-size:19px;line-height:1.5">ob.surf turns camera views into numbers. We show no faces and no identities: people appear only as counts or dots without names. We'll keep footage only where its owner allows it, and only to improve the counts. To watch, we link to the owner's own page. Every figure says roughly where it comes from.</p>
       <a href="how-we-count.html" class="ul" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:600">How we count a lineup</a>
     </div>
   </section>
@@ -130,12 +131,12 @@
     </div>
     <div class="card">
       <h2>Run a beach, a school or a camera?</h2>
-      <p>We make occupancy reports for towns and tourism offices, planning tools for surf schools, and counts for camera owners' own pages.</p>
+      <p>We are exploring occupancy reports for towns and tourism offices, planning tools for surf schools, and counts for camera owners' pages.</p>
       <a href="contact.html?topic=partnership" class="ghost">Talk to us</a>
     </div>
     <div class="card">
       <h2>Starting on the Basque coast</h2>
-      <p>The beta covers a few beaches in Anglet. Everywhere else, join a beach's waitlist: the beaches with the longest lists open next.</p>
+      <p>The beta is starting with a few beaches in Anglet. Public figures and waitlists are not open yet.</p>
       <a href="spots.html" class="ghost">Find your beach</a>
     </div>
   </section>
@@ -145,13 +146,13 @@
     <div class="faq">
       <div><b>Which beaches are covered?</b><span>None on the web yet. The beta starts with a few beaches on the Basque coast, in Anglet, and the map will show which ones are live.</span></div>
       <div><b>Where do the numbers come from?</b><span>From our own algorithms, built on data from multiple sources.</span></div>
-      <div><b>Do you show camera video?</b><span>Only where the camera's owner has cleared it. Otherwise we link to the owner's own page.</span></div>
-      <div><b>What do you show about people?</b><span>Counts and anonymous dots. No faces, no names, and no way to look anyone up.</span></div>
+      <div><b>Do you show camera video?</b><span>This website shows no camera video. Where available, we link to the camera owner's own page.</span></div>
+      <div><b>What do you show about people?</b><span>Counts and dots without names. No faces, no names, and no way to look anyone up.</span></div>
       <div><b>Do I need an Apple Watch?</b><span>Not to check a beach. You need one to record your own sessions.</span></div>
       <div><b>What about Android and Garmin?</b><span>They're on our <a href="roadmap.html">roadmap</a>, under Later.</span></div>
-      <div><b>How accurate are the numbers?</b><span>Each figure carries a certainty face, earned from how well our counts have matched at that beach. If one looks wrong, tap the face and tell us.</span></div>
-      <div><b>What happens to my data?</b><span>Your sessions are yours. Export or delete them any time from the app. This website keeps nothing about you: see <a href="privacy.html">Privacy</a>.</span></div>
-      <div><b>What is Demo?</b><span>A switch at the top of every page. It fills the pages with example figures, each marked "Illustration, not data", so you can see what a beach will look like. Nothing in it is real.</span></div>
+      <div><b>How accurate are the numbers?</b><span>No beach figures are public yet. The examples show how certainty will be explained. If something looks wrong, use the <a href="contact.html">contact page</a>.</span></div>
+      <div><b>What happens to my data?</b><span>This website has no analytics or trackers. It stores your Demo preference in your browser, and its host processes technical requests. See <a href="privacy.html">Privacy</a>. How the app handles your data will be explained before sign-up opens.</span></div>
+      <div><b>What is Demo?</b><span>A switch at the top of every page. It fills the pages with example figures, each marked "Illustration, not data", so you can see what a beach will look like. Its figures are examples, and its forms do not send anything.</span></div>
     </div>
   </section>
 </div>
