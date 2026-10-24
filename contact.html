@@ -23,8 +23,7 @@
   <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
   <button type="button" class="demo-off">Turn off</button>
 </div></div>
-<p id="demo-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
-<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Figures are examples; forms do not send anything.</p>
+<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
 <header class="nav wrap">
   <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
   <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-we-count.html">How we count</a><a href="roadmap.html">Roadmap</a></nav>
@@ -34,7 +33,7 @@
     <button type="button" class="menu" aria-label="Menu" aria-expanded="false" aria-controls="mainnav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.5h13M2.5 11.5h13"/></svg></button>
   </div>
 </header>
-<main id="main" tabindex="-1">
+<main id="main">
 <div class="wrap">
   <div class="cw" style="margin-top:0">
     <div>
@@ -54,14 +53,14 @@
         <div class="box" data-for="safety" hidden><b>This isn't an emergency line.</b><br>In an emergency, call 112.</div>
         <div class="box" data-for="idea" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="flex:1 1 220px">Got an idea for a feature? Post it on the roadmap so others can vote.</span><a href="request.html" class="ghost sm">Request a feature <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
         <fieldset class="lockable form" disabled>
-          <div data-for="data" hidden><span class="lbl">Which right</span><div class="chips" role="group" aria-label="Which right"><button type="button" aria-pressed="false">Access</button><button type="button" aria-pressed="false">Delete</button><button type="button" aria-pressed="false">Correct</button><button type="button" aria-pressed="false">Object</button><button type="button" aria-pressed="false">Restrict</button><button type="button" aria-pressed="false">Download a copy</button><button type="button" aria-pressed="false">Withdraw consent</button><button type="button" aria-pressed="false">Not sure</button></div></div>
+          <div data-for="data" hidden><span class="lbl">Which right</span><div class="chips" role="group"><button type="button" aria-pressed="false">Access</button><button type="button" aria-pressed="false">Delete</button><button type="button" aria-pressed="false">Correct</button><button type="button" aria-pressed="false">Object</button><button type="button" aria-pressed="false">Restrict</button><button type="button" aria-pressed="false">Download a copy</button><button type="button" aria-pressed="false">Withdraw consent</button><button type="button" aria-pressed="false">Not sure</button></div></div>
           <div data-for="safety image" hidden><label class="lbl" for="c-where">Where</label><input class="inp" id="c-where" autocomplete="off" placeholder="A spot, a link, or the “Report this” id"></div>
           <div><label class="lbl" for="c-msg">Your message</label><textarea class="ta" id="c-msg" maxlength="5000" placeholder="10 to 5,000 characters."></textarea></div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px">
             <div><label class="lbl" for="c-email">Email</label><input class="inp" id="c-email" type="email" autocomplete="off" placeholder="So we can reply"></div>
             <div><label class="lbl" for="c-name">Name <span>· optional</span></label><input class="inp" id="c-name" autocomplete="off" placeholder="How we should address you"></div>
           </div>
-          <div><span class="lbl">On behalf of</span><div class="chips" role="group" aria-label="On behalf of"><button type="button" aria-pressed="true">Myself</button><button type="button" aria-pressed="false">My child</button><button type="button" aria-pressed="false">My organisation</button><button type="button" aria-pressed="false">A client</button><button type="button" aria-pressed="false">Someone else</button></div></div>
+          <div><span class="lbl">On behalf of</span><div class="chips" role="group"><button type="button" aria-pressed="true">Myself</button><button type="button" aria-pressed="false">My child</button><button type="button" aria-pressed="false">My organisation</button><button type="button" aria-pressed="false">A client</button><button type="button" aria-pressed="false">Someone else</button></div></div>
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button type="button" class="ghost sm" data-send>Attach files</button><span class="note">Up to 5</span></div>
           <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap"><p class="note" style="flex:1 1 260px">You'll get a case number now. We reply within 7 days, and settle requests about your personal data within one month at most.</p><button type="button" class="btn sm" data-send>Send</button></div>
           <p class="note" data-for="data concern" hidden>You can also complain to your data protection authority. In France that's the CNIL (cnil.fr).</p>

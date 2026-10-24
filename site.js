@@ -30,17 +30,7 @@
     document.querySelectorAll("[data-honest]").forEach(function (el) { el.hidden = on; });
     filterBeaches();
   }
-  function setDemo(on) {
-    var previous = document.activeElement;
-    store(on);
-    apply(on);
-    if (previous && (!previous.isConnected || !previous.getClientRects().length || previous.matches(":disabled"))) {
-      var control = document.querySelector(".demo-switch");
-      if (control) control.focus();
-    }
-    var status = document.getElementById("demo-status");
-    if (status) status.textContent = on ? "Demo on. Figures are illustrations, not data. Forms send nothing." : "Demo off. Example figures are hidden.";
-  }
+  function setDemo(on) { store(on); apply(on); }
 
   var toastTimer;
   function toast(msg) {
@@ -117,6 +107,7 @@
     if (name) name.textContent = r.parentNode.textContent.trim();
     document.querySelectorAll("[data-for]").forEach(function (el) {
       el.hidden = el.getAttribute("data-for").split(" ").indexOf(k) === -1;
+      if (el.style.display === "flex" && el.hidden) el.style.display = "flex";
     });
   }
 
@@ -125,14 +116,11 @@
     if (!t) return;
     if (t.classList.contains("demo-switch")) { setDemo(t.getAttribute("aria-checked") !== "true"); return; }
     if (t.classList.contains("demo-off")) { setDemo(false); return; }
-    if (t.classList.contains("demo-on")) { setDemo(true); window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); return; }
+    if (t.classList.contains("demo-on")) { setDemo(true); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
     if (t.classList.contains("menu")) {
       var nav = document.getElementById("mainnav"), open = t.getAttribute("aria-expanded") !== "true";
       t.setAttribute("aria-expanded", open ? "true" : "false");
-      if (nav) {
-        nav.classList.toggle("open", open);
-        if (open && nav.querySelector("a")) nav.querySelector("a").focus();
-      }
+      if (nav) nav.classList.toggle("open", open);
       return;
     }
     if (t.id === "near") { near(); return; }
@@ -157,36 +145,13 @@
       return;
     }
     if (t.getAttribute("role") === "tab") {
-      selectTab(t);
+      document.querySelectorAll('[role="tab"]').forEach(function (b) {
+        var sel = b === t;
+        b.setAttribute("aria-selected", sel ? "true" : "false");
+        var p = document.getElementById(b.getAttribute("aria-controls"));
+        if (p) p.hidden = !sel;
+      });
       return;
-    }
-  });
-  function selectTab(tab) {
-    tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]').forEach(function (b) {
-      var selected = b === tab;
-      b.setAttribute("aria-selected", selected ? "true" : "false");
-      b.tabIndex = selected ? 0 : -1;
-      var panel = document.getElementById(b.getAttribute("aria-controls"));
-      if (panel) panel.hidden = !selected;
-    });
-  }
-  document.addEventListener("keydown", function (e) {
-    var tab = e.target.closest('[role="tab"]');
-    if (tab && ["ArrowLeft", "ArrowRight", "Home", "End"].indexOf(e.key) !== -1) {
-      var tabs = Array.from(tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]'));
-      var i = tabs.indexOf(tab);
-      i = e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : (i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
-      e.preventDefault();
-      selectTab(tabs[i]);
-      tabs[i].focus();
-    }
-    if (e.key === "Escape") {
-      var menu = document.querySelector('.menu[aria-expanded="true"]');
-      if (menu && (e.target === menu || e.target.closest("#mainnav"))) {
-        menu.setAttribute("aria-expanded", "false");
-        document.getElementById("mainnav").classList.remove("open");
-        menu.focus();
-      }
     }
   });
   document.addEventListener("input", function (e) {
