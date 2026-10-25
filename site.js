@@ -91,6 +91,16 @@
     }, { maximumAge: 600000, timeout: 10000 });
   }
 
+  // spot page: the drawn plan or the aerial photo (its image loads the first time it's picked)
+  function layer(k) {
+    var stage = document.querySelector(".stage");
+    if (!stage) return;
+    stage.setAttribute("data-layer", k);
+    stage.querySelectorAll("button[data-layer]").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-layer") === k ? "true" : "false"); });
+    var img = stage.querySelector("image[data-href]");
+    if (k === "sat" && img && !img.getAttribute("href")) img.setAttribute("href", img.getAttribute("data-href"));
+  }
+
   // "Already asked?" on the request page
   function asked() {
     var input = document.getElementById("rq-t"), box = document.getElementById("asked"), out = document.getElementById("asked-list"), data = document.getElementById("roadmap-items");
@@ -136,6 +146,7 @@
       return;
     }
     if (t.id === "near") { near(); return; }
+    if (t.hasAttribute("data-layer")) { layer(t.getAttribute("data-layer")); return; }
     if (t.hasAttribute("data-copy")) {
       var url = t.getAttribute("data-copy");
       if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { toast("Link copied: " + url); }, function () { toast(url); });
