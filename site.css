@@ -72,6 +72,8 @@ html[data-demo] .honest-only{display:none}
 .fl{display:inline-flex;align-items:center;gap:8px}
 .lg{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--sub)}
 .lg span{display:inline-flex;align-items:center;gap:7px}
+.lgm{position:absolute;left:20px;top:20px;z-index:2;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:16px;color:var(--glassfg)}
+@container map (max-width:580px){.lgm{display:grid;grid-template-columns:auto auto;gap:6px 14px}.mapbox .pill{display:none}}
 .dot{width:10px;height:10px;border-radius:5px;flex:none;display:inline-block}
 .dot.rep{background:var(--ring)}
 .dot.usual{border:1.5px solid var(--ring);background:linear-gradient(90deg,var(--sand) 50%,var(--ring) 50%)}
@@ -90,7 +92,7 @@ html[data-demo] .honest-only{display:none}
 .search:focus-within{box-shadow:0 0 0 2px var(--focus)}
 .search button{height:38px;padding:0 14px;border-radius:19px;border:0;background:var(--btn);color:var(--btnfg);font-size:14px;font-weight:600;cursor:pointer}
 .locate{height:32px;padding:0 12px;border-radius:16px;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line2);white-space:nowrap;background:transparent;border:0;cursor:pointer}
-.mapbox{position:relative;height:640px;border-radius:24px;overflow:hidden;background:var(--sea)}
+.mapbox{position:relative;height:640px;border-radius:24px;overflow:hidden;background:var(--sea);container:map/inline-size}
 .mapwrap{position:absolute;inset:0}
 .mapwrap>svg{display:block;width:100%;height:100%}
 .pill{position:absolute;height:36px;padding:0 14px;border-radius:18px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
@@ -125,11 +127,12 @@ html[data-demo] .honest-only{display:none}
 .cards3 h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-0.015em}
 .cards3 p{margin:8px 0 18px;font-size:15px;line-height:1.5;color:var(--sub)}
 .cards3 .card>a,.cards3 .card>button{margin-top:auto;align-self:flex-start}
-.faq{border-top:1px solid var(--line2)}
+.faq{border-top:1px solid var(--line2);container:faq/inline-size}
 .faq>div{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:24px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5}
 .faq b{font-weight:600}
 .faq span{color:var(--sub)}
 .faq a{text-decoration:underline;text-underline-offset:3px}
+@container faq (max-width:640px){.faq>div{grid-template-columns:minmax(0,1fr);gap:4px}}
 /* footer */
 .foot{margin-top:80px;padding-bottom:40px}
 .foot .links{padding-top:28px;border-top:1px solid var(--line2)}
@@ -191,12 +194,14 @@ html[data-demo] .honest-only{display:none}
 .stage[data-layer="sat"] .satl{display:block}
 .stage[data-layer="sat"] .cav-base{display:none}
 .stage[data-layer="sat"] .cgrid line{stroke:#FFFFFF;stroke-opacity:0.24}
-.stage[data-layer="sat"] .cgrid text{fill:#FFFFFF;stroke:rgba(0,0,0,0.42);stroke-width:2.4px;stroke-linejoin:round;paint-order:stroke}
+.stage[data-layer="sat"] .cgrid text{fill:var(--text);stroke:var(--bg);stroke-opacity:0.85;stroke-width:3px;stroke-linejoin:round;paint-order:stroke}
 .stage[data-layer="sat"] .cppl circle{fill:#FFFFFF}
 .stage[data-layer="sat"] .czones ellipse{stroke:#FFFFFF;fill:rgba(255,255,255,0.12)}
 .cchip rect{fill:var(--chipbg)}.cchip text{fill:var(--chipfg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif}.cchip{color:var(--chipfg)}
 .scrim{position:absolute;inset:0;pointer-events:none;display:none;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 82%,transparent) 0,transparent 130px),linear-gradient(0deg,color-mix(in srgb,var(--bg) 90%,transparent) 0,color-mix(in srgb,var(--bg) 62%,transparent) 160px,transparent 300px)}
 .stage[data-layer="sat"] .scrim{display:block}
+.scrim2{position:absolute;inset:0;pointer-events:none;display:none;background:radial-gradient(640px 270px at 0 100%,color-mix(in srgb,var(--bg) 72%,transparent),transparent)}
+.stage[data-layer="sat"] .scrim2{display:block}
 .satcredit{position:absolute;right:clamp(16px,3vw,40px);bottom:12px;display:none;font-size:10px;color:#FFFFFF;background:rgba(0,0,0,0.5);padding:3px 7px;border-radius:6px;z-index:3}
 .stage[data-layer="sat"] .satcredit{display:block}
 .layers .grp button{height:32px;padding:0 13px;border-radius:16px;border:0;background:transparent;font:inherit;font-size:13px;font-weight:500;color:var(--sub);cursor:pointer}
@@ -385,6 +390,7 @@ fieldset[disabled]{opacity:0.55}
   .mapwrap{position:relative;inset:auto;height:480px;border-radius:24px;overflow:hidden;background:var(--sea)}
   .spots .mapbox{position:static}
   .bcard{position:static;width:auto;margin-top:12px;background:var(--card);box-shadow:0 0 0 1px var(--line);-webkit-backdrop-filter:none;backdrop-filter:none}
+  .lgm{display:grid;grid-template-columns:auto auto;gap:6px 14px}
   .nav nav{display:none}
   .nav nav.open{display:flex;flex-direction:column;position:absolute;top:64px;left:clamp(16px,3vw,40px);right:clamp(16px,3vw,40px);padding:8px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 12px 32px var(--shadow);z-index:20}
   .nav nav.open a{padding:12px 14px;font-size:16px}
@@ -406,7 +412,7 @@ fieldset[disabled]{opacity:0.55}
   .layers .grp span{height:28px;padding:0 10px;font-size:12px}
   .chip{padding:4px 8px;font-size:11px}
   .hide-m{display:none}
-  .stage[data-layer="sat"] .scrim{display:none}
+  .stage[data-layer="sat"] .scrim,.stage[data-layer="sat"] .scrim2{display:none}
   .satcredit{right:auto;left:12px}
   .ttl{position:static;max-width:none;padding:20px 16px 0}
   .ttl h1{font-size:40px}
@@ -426,6 +432,7 @@ fieldset[disabled]{opacity:0.55}
   .mapwrap{height:400px;border-radius:20px}
   .hide-s{display:none!important}
   .pill.near{left:12px!important;top:12px!important}
+  .lgm{left:12px;top:12px;padding:10px 12px;border-radius:14px;font-size:12px}
   .bcard{border-radius:20px}
   .sec{margin-top:56px}
   .sec h2{font-size:30px}
