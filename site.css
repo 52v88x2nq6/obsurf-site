@@ -1,6 +1,6 @@
 
-:root{--bg:#F2F2F7;--card:#FFFFFF;--line:#E5E5EA;--line2:#D1D1D6;--text:#000000;--sub:#5C5C61;--lab:#5C5C61;--sea:#DCE2E8;--sand:#EEEBE4;--crest:rgba(255,255,255,0.7);--groyne:#A1A1A6;--ring:#1C1C1E;--zone:rgba(28,28,30,0.06);--chipbg:rgba(28,28,30,0.86);--chipfg:#FFFFFF;--chipdim:rgba(255,255,255,0.7);--glass:rgba(255,255,255,0.74);--glassline:rgba(0,0,0,0.08);--glassfg:#000000;--btn:#000000;--btnfg:#FFFFFF;--tabsel:rgba(0,0,0,0.06);--control:#76767A;--focus:#005FCC;--live:#248A3D;--far:#B25000;--bar:#76767A;--barnow:#000000;--shadow:rgba(0,0,0,0.12);color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#0A0A0A;--card:#111111;--line:#1F1F1F;--line2:#2A2A2A;--text:#EDEDE8;--sub:#8C8C87;--lab:#8C8C87;--sea:#14181C;--sand:#201E1B;--crest:rgba(255,255,255,0.12);--groyne:#3A3A3C;--ring:#EDEDE8;--zone:rgba(237,237,232,0.07);--chipbg:rgba(237,237,232,0.92);--chipfg:#0A0A0A;--chipdim:rgba(10,10,10,0.6);--glass:rgba(28,28,30,0.78);--glassline:rgba(255,255,255,0.1);--glassfg:#EDEDE8;--btn:#EDEDE8;--btnfg:#0A0A0A;--tabsel:rgba(255,255,255,0.1);--control:#94948F;--focus:#66B0FF;--live:#4CD686;--far:#F0B54A;--bar:#94948F;--barnow:#EDEDE8;--shadow:rgba(0,0,0,0.5);color-scheme:dark}}
+:root{--bg:#F2F2F7;--card:#FFFFFF;--line:#E5E5EA;--line2:#D1D1D6;--text:#000000;--sub:#5C5C61;--lab:#5C5C61;--sea:#DCE2E8;--sand:#EEEBE4;--crest:rgba(255,255,255,0.7);--groyne:#A1A1A6;--ring:#1C1C1E;--zone:rgba(28,28,30,0.06);--chipbg:rgba(28,28,30,0.86);--chipfg:#FFFFFF;--chipdim:rgba(255,255,255,0.7);--glass:rgba(255,255,255,0.74);--glassline:rgba(0,0,0,0.08);--glassfg:#000000;--btn:#000000;--btnfg:#FFFFFF;--tabsel:rgba(0,0,0,0.06);--control:#76767A;--focus:#005FCC;--live:#248A3D;--far:#B25000;--bar:#76767A;--barnow:#000000;--shadow:rgba(0,0,0,0.12);--mdry:#EFEBE3;--mwet:#E1DBCD;--mveg:#D8DECF;--mpaved:#E8E8EB;--minland:#CFDCE6;--msea:#D2DCE4;--mreef:#B9C6D0;--mrock:#B9B4AC;--mrockline:#A29D95;--mroad:#FFFFFF;--mcasing:#D8D8DC;--mpath:#CFC9BC;--mquai:#F7F7F7;--mquaicase:#A8A39B;--mbld:#FFFFFF;--mbldline:#C6C6CB;--mshadow:rgba(0,0,0,0.07);--mcoast:#B3C1CC;--mlab:#5C5C61;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0A0A0A;--card:#111111;--line:#1F1F1F;--line2:#2A2A2A;--text:#EDEDE8;--sub:#8C8C87;--lab:#8C8C87;--sea:#14181C;--sand:#201E1B;--crest:rgba(255,255,255,0.12);--groyne:#3A3A3C;--ring:#EDEDE8;--zone:rgba(237,237,232,0.07);--chipbg:rgba(237,237,232,0.92);--chipfg:#0A0A0A;--chipdim:rgba(10,10,10,0.6);--glass:rgba(28,28,30,0.78);--glassline:rgba(255,255,255,0.1);--glassfg:#EDEDE8;--btn:#EDEDE8;--btnfg:#0A0A0A;--tabsel:rgba(255,255,255,0.1);--control:#94948F;--focus:#66B0FF;--live:#4CD686;--far:#F0B54A;--bar:#94948F;--barnow:#EDEDE8;--shadow:rgba(0,0,0,0.5);--mdry:#2A2723;--mwet:#23201C;--mveg:#1F241E;--mpaved:#2C2C2E;--minland:#16202A;--msea:#12171B;--mreef:#1D262D;--mrock:#4A4743;--mrockline:#57534E;--mroad:#3B3B3D;--mcasing:#212123;--mpath:#4A4640;--mquai:#4E4E50;--mquaicase:#2A2A2B;--mbld:#3A3A3C;--mbldline:#48484A;--mshadow:rgba(0,0,0,0.35);--mcoast:#26313A;--mlab:#9A9A94;color-scheme:dark}}
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 main[tabindex="-1"]:focus,#spot-content:focus{outline:none}
@@ -73,6 +73,8 @@ html[data-demo] .honest-only{display:none}
 .lg{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--sub)}
 .lg span{display:inline-flex;align-items:center;gap:7px}
 .lgm{position:absolute;left:20px;top:20px;z-index:2;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:16px;color:var(--glassfg)}
+.mtl{position:absolute;left:20px;top:20px;z-index:3;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.mtl .lgm{position:static}
 @container map (max-width:580px){.lgm{display:grid;grid-template-columns:auto auto;gap:6px 14px}.mapbox .mcap{display:none}}
 .dot{width:10px;height:10px;border-radius:5px;flex:none;display:inline-block}
 .dot.rep{background:var(--ring)}
@@ -92,11 +94,76 @@ html[data-demo] .honest-only{display:none}
 .search:focus-within{box-shadow:0 0 0 2px var(--focus)}
 .search button{height:38px;padding:0 14px;border-radius:19px;border:0;background:var(--btn);color:var(--btnfg);font-size:14px;font-weight:600;cursor:pointer}
 .locate{height:32px;padding:0 12px;border-radius:16px;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line2);white-space:nowrap;background:transparent;border:0;cursor:pointer}
-.mapbox{position:relative;height:640px;border-radius:24px;overflow:hidden;background:var(--sea);container:map/inline-size}
+.mapbox{position:relative;height:640px;border-radius:24px;overflow:hidden;background:var(--msea);container:map/inline-size}
 .mapwrap{position:absolute;inset:0}
-.mapwrap>svg{display:block;width:100%;height:100%}
 .pill{position:absolute;height:36px;padding:0 14px;border-radius:18px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
 .bcard{position:absolute;right:20px;bottom:20px;width:344px;border-radius:20px;padding:18px 18px 16px}
+.mapbox>.bcard{z-index:5;bottom:30px;transition:opacity .25s,transform .25s,visibility .25s}
+.mapbox.away>.bcard{opacity:0;transform:translateY(10px);visibility:hidden}
+/* the coast map: a drawing first, then map.js draws it from the map data, zoomable, with its dots and names in HTML on top */
+.mlay{position:absolute;inset:0}
+.mlay>svg{display:block;width:100%;height:100%}
+.f-mdry{fill:var(--mdry)}.f-msea{fill:var(--msea)}.s-mlab{stroke:var(--mlab)}.t-mg{fill:var(--mlab);font-family:ui-monospace,"SF Mono","Geist Mono",Menlo,Consolas,monospace}.t-mt{fill:var(--mlab);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif}
+.imap.im .mmk,.imap.im .mtown{visibility:hidden}
+.imap.on .mbase{visibility:hidden}
+.imap.on{cursor:grab;touch-action:pan-x pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.imap.on.drag{cursor:grabbing}
+.mapwrap.imap:focus-visible{outline:none;border-radius:24px}
+.mapwrap.imap:focus-visible::after{content:"";position:absolute;inset:0;z-index:6;border-radius:inherit;box-shadow:inset 0 0 0 2px var(--focus);pointer-events:none}
+.imc{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+.imo{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.imo>*{position:absolute;left:0;top:0}
+.imk{width:24px;height:24px;margin:-12px 0 0 -12px;padding:0;border:0;background:none;color:inherit;pointer-events:auto;cursor:pointer}
+.imk::after{content:"";position:absolute;inset:-8px}
+.imk svg{display:block;overflow:visible}
+.iml{font-size:12px;line-height:1;color:var(--mlab);white-space:nowrap}
+.iml.b{font-weight:600;color:var(--text)}
+.iml.mono,.imo.near .iml{font-family:ui-monospace,"SF Mono","Geist Mono",Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;text-shadow:0 0 2px var(--mdry),0 0 4px var(--mdry),0 0 7px var(--mdry)}
+.imbr{width:6px;border:1px solid var(--lab);border-right:0}
+.imcall{width:252px;padding:10px 12px 11px;border-radius:12px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:12px;line-height:1.35;color:var(--sub)}
+.imcall b{display:block;margin-bottom:3px;font-size:13px;font-weight:600;color:var(--text)}
+.imcall::after{content:"";position:absolute;right:-8px;bottom:6px;border:6px solid transparent;border-left:8px solid var(--card);border-right:0}
+.impk .chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px 5px 11px}
+.imap .mcap{z-index:2}
+.mfoot,.mcred{position:absolute;z-index:2;font-size:10px;color:var(--mlab);text-shadow:0 0 2px var(--mdry),0 0 4px var(--mdry),0 0 7px var(--mdry)}
+.mfoot{left:20px;bottom:14px;display:flex;align-items:center}
+.mcred{right:20px;bottom:6px;padding:4px 0}
+.mcred:hover{color:var(--text);text-decoration:underline}
+.imsc{display:inline-flex;align-items:center;gap:7px}
+.imsc i{display:block;height:5px;border:1px solid currentColor;border-top:0;box-shadow:0 0 2px var(--mdry)}
+.imsc b{font-weight:600;text-transform:none;letter-spacing:0.04em}
+.imctl{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.imctl .grp{display:flex;flex-direction:column;border-radius:18px;overflow:hidden}
+.imctl button{width:36px;height:36px;padding:0;border:0;background:transparent;color:var(--glassfg);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.imctl .grp button+button{box-shadow:inset 0 0.5px 0 var(--glassline)}
+.imctl .homeb{width:auto;height:32px;padding:0 13px;border-radius:16px;background:var(--glass);letter-spacing:0.06em}
+.imap:not(.on) .imctl{display:none}
+.imhint{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;font-size:17px;font-weight:600;color:#FFFFFF;background:rgba(0,0,0,0.45);opacity:0;pointer-events:none;transition:opacity .25s}
+.imhint.on{opacity:1}
+@container map (max-width:580px){.mfoot{left:12px;bottom:10px}.mcred{right:12px}}
+/* Apple's satellite view, only with a token: the button, the card that asks first, and Apple's map under ours, with
+   our dots, names and peaks in white on it and our footer lifted off Apple's logo and Legal link. Our canvas lets the
+   pointer through to the map's own layer, where MapKit keeps its Legal link clickable; drags still reach .imap */
+.imctl .satb{width:auto;height:32px;padding:0 13px;border-radius:16px;letter-spacing:0.06em}
+.imctl .satb[aria-pressed="true"]{background:var(--btn);color:var(--btnfg);box-shadow:none}
+.imctl .satb.busy{cursor:progress;opacity:0.7}
+.imctl .satonly{width:auto;height:auto;padding:6px 10px;border-radius:12px;background:var(--glass);font-size:11px;letter-spacing:0.04em;text-decoration:underline;text-underline-offset:2px}
+.imsat{position:absolute;inset:0;pointer-events:none}
+.imap.sat .imc{pointer-events:none}
+.imap.sat .imo{--mlab:#FFFFFF;--lab:rgba(255,255,255,0.8);--ring:#FFFFFF;--zone:rgba(255,255,255,0.3);--mdry:#1C1C1E}
+.imap.sat .iml,.imap.sat .mfoot,.imap.sat .mcred{color:#FFFFFF;text-shadow:0 0 2px rgba(0,0,0,0.9),0 0 5px rgba(0,0,0,0.6),0 0 9px rgba(0,0,0,0.4)}
+.imap.sat .mfoot{bottom:40px}
+.imap.sat .mcred{bottom:32px}
+.imsatcard{position:absolute;left:50%;top:50%;z-index:7;width:min(360px,calc(100% - 32px));transform:translate(-50%,-50%);box-sizing:border-box;padding:18px 18px 16px;border-radius:20px;background:var(--card);color:var(--text);box-shadow:0 0 0 1px var(--line),0 12px 40px var(--shadow);font-size:14px;line-height:1.4;cursor:auto}
+.imsatcard:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.imsatcard b{display:block;font-size:17px;font-weight:600}
+.imsatcard p{margin:6px 0 0}
+.imsatcard small,.imsatcard a{font-size:12px;color:var(--sub)}
+.imsatcard a{text-decoration:underline}
+.imsatcard .row{display:flex;gap:8px;margin-top:14px}
+.imsatcard button{flex:1;height:40px;padding:0 12px;border:0;border-radius:20px;background:transparent;box-shadow:inset 0 0 0 1px var(--line2);color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
+.imsatcard button:hover{background:var(--line)}
+@container map (max-width:440px){.imsatcard .row{flex-direction:column}.imsatcard button{flex:none}}
 .seg{display:flex;padding:3px;border-radius:12px;background:var(--line)}
 .seg span{flex:1;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--sub)}
 .seg span.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px var(--shadow)}
@@ -372,9 +439,10 @@ fieldset[disabled]{opacity:0.55}
   .hero,.two,.two.rev,.spots,.cw,.cw.side{grid-template-columns:minmax(0,1fr)}
   .two{gap:18px}
   .mapbox{height:auto;overflow:visible;background:none;border-radius:0}
-  .mapwrap{position:relative;inset:auto;height:480px;border-radius:24px;overflow:hidden;background:var(--sea)}
+  .mapwrap{position:relative;inset:auto;height:480px;border-radius:24px;overflow:hidden;background:var(--msea)}
   .spots .mapbox{position:static}
   .bcard{position:static;width:auto;margin-top:12px;background:var(--card);box-shadow:0 0 0 1px var(--line);-webkit-backdrop-filter:none;backdrop-filter:none}
+  .mapbox.away>.bcard{opacity:1;transform:none;visibility:visible}
   .lgm{display:grid;grid-template-columns:auto auto;gap:6px 14px}
   .nav nav{display:none}
   .nav nav.open{display:flex;flex-direction:column;position:absolute;top:64px;left:clamp(16px,3vw,40px);right:clamp(16px,3vw,40px);padding:8px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 12px 32px var(--shadow);z-index:20}
@@ -415,8 +483,10 @@ fieldset[disabled]{opacity:0.55}
   .lede{font-size:17px;margin-top:14px}
   .btnrow>*{flex:1 1 100%}
   .mapwrap{height:400px;border-radius:20px}
+  .mapwrap.imap:focus-visible{border-radius:20px}
   .hide-s{display:none!important}
   .lgm{left:12px;top:12px;padding:10px 12px;border-radius:14px;font-size:12px}
+  .mtl{left:12px;top:12px}
   .bcard{border-radius:20px}
   .sec{margin-top:56px}
   .sec h2{font-size:30px}
