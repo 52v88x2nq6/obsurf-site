@@ -73,7 +73,7 @@ html[data-demo] .honest-only{display:none}
 .lg{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--sub)}
 .lg span{display:inline-flex;align-items:center;gap:7px}
 .lgm{position:absolute;left:20px;top:20px;z-index:2;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:16px;color:var(--glassfg)}
-@container map (max-width:580px){.lgm{display:grid;grid-template-columns:auto auto;gap:6px 14px}.mapbox .pill{display:none}}
+@container map (max-width:580px){.lgm{display:grid;grid-template-columns:auto auto;gap:6px 14px}.mapbox .mcap{display:none}}
 .dot{width:10px;height:10px;border-radius:5px;flex:none;display:inline-block}
 .dot.rep{background:var(--ring)}
 .dot.usual{border:1.5px solid var(--ring);background:linear-gradient(90deg,var(--sand) 50%,var(--ring) 50%)}
@@ -232,52 +232,37 @@ html[data-demo] .honest-only{display:none}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .sk0{stop-color:var(--card)}.sk1{stop-color:var(--sea)}
 .hlab{paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
-/* how it works: the alert and the Watch */
-.hwyou{display:grid;grid-template-columns:minmax(0,1fr) 38px 300px;gap:18px;align-items:center}
+/* how it works: the alert (a Simulator lock screen in Apple's iPhone 18 Pro) and the Watch (the Series 12 46 mm screen) */
+.hwyou{display:grid;grid-template-columns:minmax(0,1fr) 38px 320px;gap:18px;align-items:center}
 .prefs{padding:22px}
 .prefs .mt{margin-top:20px}
 .pch{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .pch span{height:30px;padding:0 12px;border-radius:15px;box-shadow:inset 0 0 0 1px var(--line2);font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
 .pch.lrn span{background:var(--tabsel);box-shadow:none}
 .hwgo{width:38px;height:38px;border-radius:19px;background:var(--card);color:var(--text);box-shadow:0 0 0 1px var(--line2),0 2px 10px var(--shadow);display:flex;align-items:center;justify-content:center}
-.phone{width:300px;height:400px;border-radius:52px;background:#0A0A0A;padding:10px;box-shadow:0 0 0 1px var(--line2),0 20px 50px var(--shadow)}
-.phone .scr{position:relative;height:100%;border-radius:42px;overflow:hidden;color:#FFFFFF;background:linear-gradient(165deg,#46667D 0%,#1D2E3B 46%,#0C1218 100%)}
-.phone .isl{position:absolute;left:50%;top:11px;width:90px;height:26px;margin-left:-45px;border-radius:13px;background:#000000}
-.phone .lt{position:absolute;left:0;right:0;top:56px;text-align:center}
-.phone .lt div:first-child{font-size:15px;font-weight:600;opacity:0.85}
-.phone .lt div:last-child{font-size:76px;font-weight:700;letter-spacing:-0.02em;line-height:1;margin-top:2px}
-.nt{position:absolute;left:10px;right:10px;top:184px;display:flex;gap:11px;padding:12px 14px;border-radius:22px;background:rgba(44,44,46,0.72);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
-.nt .ic{flex:none;width:38px;height:38px;border-radius:9px;box-shadow:0 0 0 1px rgba(255,255,255,0.14)}
-.ntx{flex:1;min-width:0}
-.nth{display:flex;justify-content:space-between;gap:8px}
-.nth b{font-size:15px;font-weight:600;line-height:1.3}
-.nth span{font-size:13px;color:rgba(235,235,245,0.75);white-space:nowrap}
-.nt p{margin:1px 0 0;font-size:15px;line-height:1.32}
+.phone{display:block;width:320px;max-width:100%;height:auto}
 .hwwatch{display:flex;flex-wrap:wrap;justify-content:center;gap:32px 56px}
 .wf{margin:0;width:236px;display:grid;gap:18px;justify-items:center}
 .wf figcaption{font-size:14px;line-height:1.45;color:var(--sub);text-align:center}
 .wf figcaption b{display:block;font-size:15px;font-weight:600;color:var(--text)}
-.wcase{position:relative;width:236px;height:276px;border-radius:62px;background:#1C1C1E;padding:14px;box-shadow:inset 0 0 0 1.5px #3A3A3C,0 20px 44px var(--shadow)}
-.wcase::before{content:"";position:absolute;right:-6px;top:66px;width:8px;height:40px;border-radius:4px;background:#2C2C2E;box-shadow:inset 0 0 0 1px #48484A}
-.wcase::after{content:"";position:absolute;right:-3px;top:128px;width:4px;height:58px;border-radius:2px;background:#2C2C2E}
-.wsc{position:relative;width:208px;height:248px;border-radius:46px;background:#000000;overflow:hidden;color:#FFFFFF;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wsc{position:relative;width:208px;height:248px;clip-path:path('M65.379 0 L142.621 0 C165.355 0 173.598 2.367 181.91 6.812 C190.221 11.257 196.743 17.779 201.188 26.09 C205.633 34.402 208 42.645 208 65.379 L208 182.621 C208 205.355 205.633 213.598 201.188 221.91 C196.743 230.221 190.221 236.743 181.91 241.188 C173.598 245.633 165.355 248 142.621 248 L65.379 248 C42.645 248 34.402 245.633 26.09 241.188 C17.779 236.743 11.257 230.221 6.812 221.91 C2.367 213.598 0 205.355 0 182.621 L0 65.379 C0 42.645 2.367 34.402 6.812 26.09 C11.257 17.779 17.779 11.257 26.09 6.812 C34.402 2.367 42.645 0 65.379 0 Z');background:#000000;overflow:hidden;color:#FFFFFF;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 .wsc .wm{font-family:ui-monospace,"SF Mono","Geist Mono",Menlo,Consolas,monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(235,235,245,0.6)}
 .wtop{position:absolute;left:0;right:0;top:12px;height:20px;padding:0 22px;display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:600}
 .wel{color:#4CD686}
-.wdial{position:absolute;left:50%;top:34px;width:116px;height:116px;margin-left:-58px}
-.wdial svg{display:block}
-.wplace{position:absolute;left:0;right:0;top:154px;text-align:center;font-size:16px;font-weight:600}
-.wplace span{font-weight:500;color:rgba(235,235,245,0.6)}
-.wtiles{position:absolute;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.wtiles>div{padding:7px 10px;border-radius:14px;background:rgba(255,255,255,0.12)}
 .wsc b{display:block;font-size:15px;font-weight:600;margin-top:2px;white-space:nowrap}
-.wnav{position:absolute;left:50%;top:36px;width:96px;height:96px;margin-left:-48px;border-radius:48px;box-shadow:inset 0 0 0 1.2px rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center}
+.wcol{position:absolute;left:0;right:0;top:44px;display:flex;flex-direction:column;align-items:center;line-height:normal}
+.wcol.wgo{top:38px}
+.wnav{position:relative;width:112px;height:112px;border-radius:56px;box-shadow:inset 0 0 0 1.2px rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center}
 .wnorth{position:absolute;top:5px;left:50%;width:2px;height:8px;margin-left:-1px;border-radius:1px;background:rgba(255,255,255,0.45)}
 .wauto{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-size:8.5px}
-.wdist{position:absolute;left:0;right:0;top:139px;text-align:center;font-size:26px;font-weight:600;letter-spacing:-0.02em;line-height:1}
-.wto{position:absolute;left:0;right:0;top:169px;display:flex;align-items:center;justify-content:center;gap:4px;color:rgba(235,235,245,0.75)}
-.wrow{position:absolute;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between}
-.wrow>div+div{text-align:right}
+.wdist{margin-top:8px;font-size:26px;font-weight:600;letter-spacing:-0.02em;line-height:1}
+.wto{margin-top:5px;display:flex;align-items:center;gap:4px;color:rgba(235,235,245,0.75)}
+.wpk{margin-top:6px;font-size:46px;font-weight:600;letter-spacing:-0.03em;line-height:1}
+.wnow{margin-top:10px;display:flex;align-items:center;gap:6px;font-size:15px;color:rgba(235,235,245,0.75)}
+.wnow .face{color:#FFFFFF}
+.wbot{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:baseline;line-height:normal}
+.wv{font-size:17px;font-weight:600}
+.wv small{font-size:11px;font-weight:500;color:rgba(235,235,245,0.6)}
 /* roadmap */
 .tabs{display:flex;padding:3px;border-radius:12px;background:var(--line);gap:2px}
 .tabs button{height:32px;padding:0 14px;border-radius:9px;border:0;background:transparent;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer}
@@ -431,7 +416,6 @@ fieldset[disabled]{opacity:0.55}
   .btnrow>*{flex:1 1 100%}
   .mapwrap{height:400px;border-radius:20px}
   .hide-s{display:none!important}
-  .pill.near{left:12px!important;top:12px!important}
   .lgm{left:12px;top:12px;padding:10px 12px;border-radius:14px;font-size:12px}
   .bcard{border-radius:20px}
   .sec{margin-top:56px}
