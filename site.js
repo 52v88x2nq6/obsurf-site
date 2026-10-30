@@ -104,7 +104,14 @@
   }
 
   // a "?": its words show on hover or focus, and a tap keeps them open until the next tap, a tap elsewhere or Escape
-  function closeTips() { document.querySelectorAll(".tipw.on").forEach(function (w) { w.classList.remove("on"); }); }
+  // ("Sources" under a drawing opens the same way, and says so: its words carry links)
+  function closeTips() {
+    document.querySelectorAll(".tipw.on").forEach(function (w) {
+      w.classList.remove("on");
+      var b = w.querySelector(".srcb");
+      if (b) b.setAttribute("aria-expanded", "false");
+    });
+  }
   // Escape hides whatever words show, a face's too, and they stay hidden while the pointer or focus stays there
   // (WCAG 1.4.13): leaving, or tapping the "?" again, brings them back
   function dismissTips() {
@@ -143,8 +150,16 @@
     document.addEventListener(type, function (e) {
       var w = e.target.closest && e.target.closest(".tipw"), t = w && w.querySelector(".tip");
       if (t) fitTip(t, true);
+      var f = e.target.closest && e.target.closest(".fc");
+      if (f) fitFace(f);
     });
   });
+  // a face's words open up and to the left of it, or to the right near the window's left edge, and below it near the top
+  function fitFace(f) {
+    var r = f.getBoundingClientRect();
+    f.classList.toggle("l", r.right < 270);
+    f.classList.toggle("dn", r.top < 150);
+  }
 
   // Privacy: the satellite view's switch (legal, 30 Oct 2026). It keeps the same answer as the maps' card, in the same
   // place: "yes" or "no" and the day, for 6 months (map.js). Switching it off in one tab takes Apple's map away in the
@@ -215,11 +230,12 @@
       return;
     }
     if (t.id === "near") { near(); return; }
-    if (t.classList.contains("qm")) {
+    if (t.classList.contains("qm") || t.classList.contains("srcb")) {
       var tw = t.closest(".tipw"), open = !tw.classList.contains("on") || tw.classList.contains("x");
       closeTips();
       tw.classList.remove("x");
       tw.classList.toggle("on", open);
+      if (t.classList.contains("srcb")) t.setAttribute("aria-expanded", open ? "true" : "false");
       return;
     }
     if (t.id === "satsw") { satKeep(t.getAttribute("aria-checked") === "true" ? "no" : "yes"); satShow(true); return; }

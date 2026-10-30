@@ -7,6 +7,7 @@
   var cv = document.createElement("canvas"), ctx = cv.getContext && cv.getContext("2d");
   if (!ctx) return;
   var off = document.createElement("canvas"), octx = off.getContext("2d");
+  var tv = document.createElement("canvas"), tctx = tv.getContext("2d");   // the edge marks, over the glass
   var D = JSON.parse(dataEl.textContent), P = D.proj, DOM = D.domain, F = D.frame, BASE = host.getAttribute("data-imap");
   // Demo's example states, note and peaks wait in a template, like the site's other demo blocks
   var DM = {states: {}, sel: "", anglet: "", callout: null}, dmEl = document.getElementById("imap-demo");
@@ -57,7 +58,16 @@
   cv.setAttribute("aria-hidden", "true");
   var ov = document.createElement("div");
   ov.className = "imo";
-  (mk.nextElementSibling || mk).after(cv, ov);
+  var glass = document.createElement("div");   // frosted edges over the drawing (Leo, 30 Oct 2026), under the marks and names
+  glass.className = "imgl";
+  glass.setAttribute("aria-hidden", "true");
+  glass.innerHTML = ["t", "b", "l", "r"].map(function (k) { return '<i class="' + k + '"><b></b><b></b><b></b></i>'; }).join("");
+  tv.className = "imc imt";
+  tv.setAttribute("aria-hidden", "true");
+  var pane = document.createElement("div");    // the drawing and its glass: all the glass blurs, so no page shows in a corner
+  pane.className = "impane";
+  pane.append(cv, glass);
+  (mk.nextElementSibling || mk).after(pane, tv, ov);
   var ctl = document.createElement("div");
   ctl.className = "imctl";
   ctl.innerHTML = '<div class="gl grp"><button type="button" data-z="in" aria-label="Zoom in">' + D.icons.plus + "</button>" +
@@ -141,7 +151,7 @@
     H = Math.max(1, r.height);
     R = Math.min(window.devicePixelRatio || 1, 3);
     var bw = Math.round(W * R), bh = Math.round(H * R);
-    if (cv.width !== bw || cv.height !== bh) { cv.width = off.width = bw; cv.height = off.height = bh; }
+    if (cv.width !== bw || cv.height !== bh) { cv.width = off.width = tv.width = bw; cv.height = off.height = tv.height = bh; }
     // the drawn map: viewBox 0 0 900 620, xMinYMid slice; vb = [x0, units a metre east, y0, units a metre south]
     var k = Math.max(W / 900, H / 620), vb = D.vb;
     home = {x: (W / (2 * k) - vb[0]) / vb[1], y: (310 - vb[2]) / vb[3], s: k * (vb[1] + vb[3]) / 2};
@@ -332,7 +342,7 @@
       req();
     }).catch(function () {                 // keep the drawn map
       host.classList.remove("im");
-      [cv, ov, ctl, hint, scale].forEach(function (e) { e.remove(); });
+      [pane, tv, ov, ctl, hint, scale].forEach(function (e) { e.remove(); });
     });
   }
   function wantShore() {
@@ -581,23 +591,27 @@
     });
     ctx.stroke();
     ctx.globalAlpha = 1;
-    ctx.strokeStyle = ctx.fillStyle = C.mlab;
-    ctx.font = "10px " + D.mono;
-    if (sat.on) { ctx.shadowColor = "rgba(0,0,0,0.7)"; ctx.shadowBlur = 3 * R; }
-    ctx.textBaseline = "alphabetic";
+    var c = tctx;                          // the marks and their degrees stay sharp over the frosted edges
+    c.setTransform(1, 0, 0, 1, 0, 0);
+    c.clearRect(0, 0, tv.width, tv.height);
+    c.setTransform(R, 0, 0, R, 0, 0);
+    c.strokeStyle = c.fillStyle = C.mlab;
+    c.lineWidth = 1;
+    c.font = "10px " + D.mono;
+    c.shadowColor = sat.on ? "rgba(0,0,0,0.7)" : "transparent";
+    c.shadowBlur = sat.on ? 3 * R : 0;
+    c.textBaseline = "alphabetic";
     var taken = furn.concat(boxes);
-    ctx.beginPath();
+    c.beginPath();
     marks.forEach(function (k) {
-      var t = k[0], w = ctx.measureText(t).width, x = k[1][0], y = k[1][1];
+      var t = k[0], w = c.measureText(t).width, x = k[1][0], y = k[1][1];
       var bx = k[2] === "l" ? [12, y - 8, 30 + w, y + 8] : k[2] === "r" ? [W - 30 - w, y - 8, W - 12, y + 8] : [x - 2, by - 18, x + 6 + w, by];
       if (hit(bx, taken)) return;
-      if (k[2] === "l") { ctx.moveTo(14, y); ctx.lineTo(22, y); ctx.fillText(t, 26, y + 3.5); }
-      else if (k[2] === "r") { ctx.moveTo(W - 22, y); ctx.lineTo(W - 14, y); ctx.fillText(t, W - 26 - w, y + 3.5); }
-      else { ctx.moveTo(x, by - 8); ctx.lineTo(x, by); ctx.fillText(t, x + 4, by - 6); }
+      if (k[2] === "l") { c.moveTo(14, y); c.lineTo(22, y); c.fillText(t, 26, y + 3.5); }
+      else if (k[2] === "r") { c.moveTo(W - 22, y); c.lineTo(W - 14, y); c.fillText(t, W - 26 - w, y + 3.5); }
+      else { c.moveTo(x, by - 8); c.lineTo(x, by); c.fillText(t, x + 4, by - 6); }
     });
-    ctx.stroke();
-    ctx.shadowColor = "transparent";
-    ctx.shadowBlur = 0;
+    c.stroke();
   }
   function edge(p, q, k, c) {              // where the line p-q meets x = c (k 0) or y = c (k 1), if that's on the map
     var d = q[k] - p[k];
