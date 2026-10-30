@@ -9,12 +9,16 @@
   var off = document.createElement("canvas"), octx = off.getContext("2d");
   var D = JSON.parse(dataEl.textContent), P = D.proj, DOM = D.domain, F = D.frame, BASE = host.getAttribute("data-imap");
   // Demo's example states, note and peaks wait in a template, like the site's other demo blocks
-  var DM = {states: {}, sel: "", anglet: "", callout: null, peaks: []}, dmEl = document.getElementById("imap-demo");
+  var DM = {states: {}, sel: "", anglet: "", callout: null}, dmEl = document.getElementById("imap-demo");
   var dmScript = dmEl && dmEl.content && dmEl.content.querySelector("script");
   if (dmScript) DM = JSON.parse(dmScript.textContent);
   var root = document.documentElement, motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var dark = window.matchMedia("(prefers-color-scheme: dark)");
   var MAC = /Mac|iPhone|iPad|iPod/.test(navigator.platform || "");
   var SREG = 0.35, SMAX = 3, LOD = 0.035;    // px a metre: most zoom away from Anglet, most at Anglet, finer coast from
+  // The beach page (data-spot): the same map turned to look out to sea, the shore across and the sea at the top. It keeps
+  // to Anglet's shore and tells the page which beach is in view (imap:beach), so the figures below can follow.
+  var SP = D.spot || null, ROT = 0, RC = 1, RS = 0, cur = "", lock = "", RAIL = null;
 
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function ramp(s, a, b) { return clamp((s - a) / (b - a), 0, 1); }
@@ -33,9 +37,20 @@
   var FC = [uvToM(F.u0, F.v0), uvToM(F.u1, F.v0), uvToM(F.u1, F.v1), uvToM(F.u0, F.v1)];
   var FBOX = [Math.min(FC[0][0], FC[1][0], FC[2][0], FC[3][0]), Math.min(FC[0][1], FC[1][1], FC[2][1], FC[3][1]),
               Math.max(FC[0][0], FC[1][0], FC[2][0], FC[3][0]), Math.max(FC[0][1], FC[1][1], FC[2][1], FC[3][1])];
+  if (SP) {                                 // turned so the frame's u runs to the right and v, out to sea, up
+    ROT = Math.atan2(AY * CB, AX * SB);
+    RC = Math.cos(ROT);
+    RS = Math.sin(ROT);
+    SP.m = {};
+    Object.keys(SP.centres).forEach(function (k) { SP.m[k] = uvToM(SP.centres[k][0], SP.centres[k][1]); });
+    RAIL = Object.keys(SP.centres).map(function (k) { return SP.centres[k]; }).sort(function (a, b) { return a[0] - b[0]; });
+    var hash = (location.hash || "").slice(1);
+    cur = SP.m[hash] ? hash : SP.start;
+  }
 
   // ---------------------------------------------------------------- the page's parts
   var mk = host.querySelector(".mmk"), pill = host.querySelector(".mcap"), foot = host.querySelector(".mfoot");
+  var FURN = host.getAttribute("data-furn");   // the page's own things over the map (the beach page's header and title)
   var cred = host.querySelector(".mcred");
   var box = host.parentNode, legend = host.querySelector(".lgm"), card = box.querySelector(".bcard");
   cv.className = "imc";
@@ -106,22 +121,19 @@
   var brLine = el("i", "imbr"), brText = el("span", "iml b"), cluster = el("span", "iml b", D.anglet[1]);
   var call = el("div", "imcall");
   if (DM.callout) call.innerHTML = DM.callout.html;
-  var PK = DM.peaks.map(function (p) {
-    var w = el("div", "impk");
-    w.innerHTML = p[3];
-    return {u: p[0], v: p[1], n: p[2], lv: p[4], el: w};
-  });
+  var PKS = null, pkState = 0;              // Demo's peaks, from map/peaks.json once Demo is on and the map is close in
   var labels = [brText, cluster].concat(B.map(function (b) { return b.lab; }), T.map(function (t) { return t.lab; }),
                                         PL.map(function (t) { return t.lab; }));
   var callB = DM.callout && B.filter(function (b) { return b.slug === DM.callout.slug; })[0];
 
   // ---------------------------------------------------------------- state
-  var W = 1, H = 1, R = 1, home = {x: 0, y: 0, s: 1, k: 1}, cam = {x: 0, y: 0, s: 1}, ready = false, raf = 0, anim = null;
+  var W = 1, H = 1, R = 1, home = {x: 0, y: 0, s: 1}, cam = {x: 0, y: 0, s: 1}, zmin = 1, ready = false, raf = 0, anim = null;
   var G = null, A = null, fade = null, aState = 0, C = {}, reef = null, furn = [], furnDirty = true, near = null, pillLast = "";
   var touched = false, away = false;    // away: zoomed in, when the info card on a wide map steps aside
   // the satellite view: st 0 not loaded, 1 loading, 2 ready; f fades Apple's map in (1) and out (0) under ours
   // bad: Apple refused or failed once on this page (a wrong token, say), so later taps say so straight away
-  var sat = {on: false, st: 0, map: null, el: null, f: 0, t: 0, init: false, last: "", timer: 0, wait: 0, bad: false};
+  var sat = {on: false, st: 0, map: null, el: null, f: 0, t: 0, init: false, last: "", timer: 0, wait: 0, bad: false, k: 0};
+  var SAT_TURN = ROT * 180 / Math.PI;         // Apple's map turned to match: MapKit turns it clockwise, as ours is
 
   function measure() {
     var r = host.getBoundingClientRect();
@@ -132,7 +144,13 @@
     if (cv.width !== bw || cv.height !== bh) { cv.width = off.width = bw; cv.height = off.height = bh; }
     // the drawn map: viewBox 0 0 900 620, xMinYMid slice; vb = [x0, units a metre east, y0, units a metre south]
     var k = Math.max(W / 900, H / 620), vb = D.vb;
-    home = {x: (W / (2 * k) - vb[0]) / vb[1], y: (310 - vb[2]) / vb[3], s: k * (vb[1] + vb[3]) / 2, k: k};
+    home = {x: (W / (2 * k) - vb[0]) / vb[1], y: (310 - vb[2]) / vb[3], s: k * (vb[1] + vb[3]) / 2};
+    zmin = home.s;
+    if (SP) { home = spotView(cur); zmin = clamp(W / 7000, 0.04, 0.3); }
+  }
+  function spotView(slug) {                // the beach page's view of a beach: its peaks across the middle
+    var m = SP.m[slug];
+    return {x: m[0], y: m[1], s: clamp(W / 640, 0.8, 2.4)};
   }
   function atHome() {
     return Math.abs(cam.s / home.s - 1) < 0.01 && Math.abs(cam.x - home.x) * cam.s < 2 && Math.abs(cam.y - home.y) * cam.s < 2;
@@ -149,7 +167,9 @@
   function furniture() {
     var r0 = host.getBoundingClientRect();
     furn = [];
-    [legend, pill, foot, cred, ctl, away ? null : card].forEach(function (e) {
+    var list = [legend, pill, foot, cred, ctl, away ? null : card];
+    if (FURN) list = list.concat(Array.prototype.slice.call(document.querySelectorAll(FURN)));
+    list.forEach(function (e) {
       if (!e) return;
       var r = e.getBoundingClientRect();
       if (r.width && r.height && r.right > r0.left && r.left < r0.right && r.bottom > r0.top && r.top < r0.bottom) {
@@ -160,8 +180,31 @@
   }
 
   // ---------------------------------------------------------------- the camera
+  // world metres to the screen and back, turned by ROT on the beach page
+  function w2s(x, y) {
+    var dx = x - cam.x, dy = y - cam.y;
+    return [cam.s * (RC * dx - RS * dy) + W / 2, cam.s * (RS * dx + RC * dy) + H / 2];
+  }
+  function s2w(px, py) {
+    var dx = (px - W / 2) / cam.s, dy = (py - H / 2) / cam.s;
+    return [cam.x + RC * dx + RS * dy, cam.y - RS * dx + RC * dy];
+  }
+  function at(wx, wy, px, py, s) {         // the camera that puts the world point wx, wy at the screen point px, py
+    var dx = (px - W / 2) / s, dy = (py - H / 2) / s;
+    return {x: wx - RC * dx - RS * dy, y: wy + RS * dx - RC * dy, s: s};
+  }
+  function viewBox() {                     // the part of the world on the screen, as a box
+    var a = s2w(0, 0), b = s2w(W, 0), c = s2w(W, H), d = s2w(0, H);
+    return [Math.min(a[0], b[0], c[0], d[0]), Math.min(a[1], b[1], c[1], d[1]),
+            Math.max(a[0], b[0], c[0], d[0]), Math.max(a[1], b[1], c[1], d[1])];
+  }
   function clampCam(c) {
-    c.s = clamp(c.s, home.s, SMAX);
+    c.s = clamp(c.s, zmin, SMAX);
+    if (SP) {                              // the beach page keeps to Anglet's shore
+      var p = mToUv(c.x, c.y), pu = clamp(p[0], F.u0 + 150, F.u1 - 150), pv = clamp(p[1], -300, 700);
+      if (pu !== p[0] || pv !== p[1]) { var n = uvToM(pu, pv); c.x = n[0]; c.y = n[1]; }
+      return c;
+    }
     var hw = W / 2 / c.s, hh = H / 2 / c.s;
     c.x = DOM[2] - DOM[0] > 2 * hw ? clamp(c.x, DOM[0] + hw, DOM[2] - hw) : (DOM[0] + DOM[2]) / 2;
     c.y = DOM[3] - DOM[1] > 2 * hh ? clamp(c.y, DOM[1] + hh, DOM[3] - hh) : (DOM[1] + DOM[3]) / 2;
@@ -173,15 +216,33 @@
   }
   function set(c) { cam = clampCam(c); req(); }
   function zoomTarget(px, py, f) {
-    var wx = cam.x + (px - W / 2) / cam.s, wy = cam.y + (py - H / 2) / cam.s, s = clamp(cam.s * f, home.s, SMAX);
-    if (s > SREG && cam.s <= SREG + 1e-9 && !sat.on && !inFrame(wx, wy)) s = Math.max(cam.s, SREG);
-    return clampCam({x: wx - (px - W / 2) / s, y: wy - (py - H / 2) / s, s: s});
+    var w = s2w(px, py), s = clamp(cam.s * f, zmin, SMAX);
+    if (!SP && s > SREG && cam.s <= SREG + 1e-9 && !sat.on && !inFrame(w[0], w[1])) s = Math.max(cam.s, SREG);
+    return clampCam(at(w[0], w[1], px, py, s));
   }
   function zoomAt(px, py, f, animate) {
     var c = zoomTarget(px, py, f);
     if (animate) fly(c); else { stop(); set(c); }
   }
-  function panBy(dx, dy) { set({x: cam.x - dx / cam.s, y: cam.y - dy / cam.s, s: cam.s}); }
+  function panBy(dx, dy) {
+    var c = {x: cam.x - (RC * dx + RS * dy) / cam.s, y: cam.y - (RC * dy - RS * dx) / cam.s, s: cam.s};
+    if (SP) {                              // along the shore, the view rises and falls with it (Anglet's south lies further out)
+      var a = mToUv(cam.x, cam.y), b = mToUv(c.x, c.y), n = uvToM(b[0], b[1] + railV(b[0]) - railV(a[0]));
+      c.x = n[0];
+      c.y = n[1];
+    }
+    set(c);
+  }
+  function railV(u) {                      // the shore's line through the beaches' middles, level at each
+    if (u <= RAIL[0][0]) return RAIL[0][1];
+    for (var i = 1; i < RAIL.length; i++) {
+      if (u <= RAIL[i][0]) {
+        var a = RAIL[i - 1], b = RAIL[i], t = (u - a[0]) / (b[0] - a[0]);
+        return a[1] + (b[1] - a[1]) * t * t * (3 - 2 * t);
+      }
+    }
+    return RAIL[RAIL.length - 1][1];
+  }
   function stop() { anim = null; }
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function fly(c) {
@@ -195,6 +256,36 @@
   function goHome(animate) {
     var c = {x: home.x, y: home.y, s: home.s};
     if (animate) fly(c); else { stop(); set(c); }
+  }
+  // the beach page: which beach is in view, the one nearest the middle, kept until another is clearly nearer
+  function bname(slug) {
+    for (var i = 0; i < B.length; i++) if (B[i].slug === slug) return B[i].name;
+    return "";
+  }
+  function setBeach(slug) {
+    home = spotView(slug);
+    homeBtn.textContent = bname(slug);
+    host.setAttribute("data-beach", slug);
+    if (slug === cur) return;
+    cur = slug;
+    host.dispatchEvent(new CustomEvent("imap:beach", {detail: {slug: slug}}));
+  }
+  function goBeach(slug) {
+    lock = slug;                           // straight there: no beach on the way takes over the page
+    setBeach(slug);
+    fly(spotView(slug));
+  }
+  function inView() {
+    if (anim && lock) return;
+    lock = "";
+    if (cam.s < 0.12) return;
+    var best = cur, bd = Infinity, cd = Infinity;
+    Object.keys(SP.m).forEach(function (k) {
+      var d = Math.hypot(SP.m[k][0] - cam.x, SP.m[k][1] - cam.y);
+      if (d < bd) { bd = d; best = k; }
+      if (k === cur) cd = d;
+    });
+    if (best !== cur && bd < cd * 0.85) setBeach(best);
   }
   function step(now) {
     if (anim.kind === "fly") {
@@ -217,6 +308,7 @@
     raf = 0;
     if (furnDirty) { furniture(); furnDirty = false; }
     if (anim) step(now);
+    if (SP && ready) inView();
     satStep(now);
     place();
     if (ready) draw();
@@ -283,7 +375,8 @@
     return reef;
   }
   function draw() {
-    var s = cam.s, m = [R * s, 0, 0, R * s, R * (W / 2 - s * cam.x), R * (H / 2 - s * cam.y)], k = 1 - sat.f;
+    var s = cam.s, k = 1 - sat.f;
+    var m = [R * s * RC, R * s * RS, -R * s * RS, R * s * RC, R * (W / 2 - s * (RC * cam.x - RS * cam.y)), R * (H / 2 - s * (RS * cam.x + RC * cam.y))];
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, cv.width, cv.height);
@@ -304,10 +397,10 @@
       }
       ctx.globalAlpha = 1;
       if (s >= 0.05) wantShore();
-      var x0 = cam.x - W / 2 / s, y0 = cam.y - H / 2 / s, x1 = cam.x + W / 2 / s, y1 = cam.y + H / 2 / s;
-      if (aState === 2 && s >= 0.08 && x1 > FBOX[0] && x0 < FBOX[2] && y1 > FBOX[1] && y0 < FBOX[3]) shore(m, k);
+      var vb = viewBox();
+      if (aState === 2 && s >= 0.08 && vb[2] > FBOX[0] && vb[0] < FBOX[2] && vb[3] > FBOX[1] && vb[1] < FBOX[3]) shore(m, k);
     }
-    if (s >= 0.6 && root.hasAttribute("data-demo")) peaks(m);
+    if (root.hasAttribute("data-demo")) peaks();
     grid();
   }
   function shore(m, k) {
@@ -379,38 +472,92 @@
     ctx.drawImage(off, 0, 0);
     ctx.globalAlpha = 1;
   }
-  function peaks(m) {                    // Demo: Les Cavaliers' example peaks, take-off zones and people
-    var s = cam.s, a = ramp(s, 0.6, 0.8), k = s / F.ppm;
-    ctx.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
-    ctx.transform(FM[0], FM[1], FM[2], FM[3], FM[4], FM[5]);
-    ctx.globalAlpha = a;
-    PK.forEach(function (p) {
-      var x = (p.u - F.u0) * F.ppm, y = (F.v1 - p.v) * F.ppm;
-      ctx.beginPath();
-      ctx.ellipse(x, y, 44, 20, 0, 0, 7);
-      ctx.fillStyle = C.zone;
-      ctx.fill();
-      ctx.setLineDash(p.lv === 2 ? [5 / k, 5 / k] : []);
-      ctx.lineWidth = 1.5 / k;
+  // Demo's peaks (map/peaks.json, the same made-up lineups the beach page lists): each peak's take-off zone as three
+  // hairline contours, a small open triangle at the peak, the people as dots, and its best rides of the last hour as
+  // faint lines, white at the take-off and turning through the ride colours with the seconds ridden.
+  function wantPeaks() {
+    if (pkState) return;
+    pkState = 1;
+    fetch(BASE + D.peaks).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (list) {
+      PKS = list.map(function (p) {        // [beach, name, u, v, range, face, zone rings, people, rides]
+        var w = el("div", "impk"), m = uvToM(p[2], p[3]);
+        w.innerHTML = '<span class="chip"><span></span>' + D.faces[p[5]] + "</span>";
+        w.firstChild.firstChild.textContent = p[1] + " · " + p[4];
+        hide(w);
+        return {slug: p[0], x: m[0], y: m[1], lv: p[5], el: w, chip: w.firstChild, rings: p[6].map(flat), ppl: flat(p[7]),
+                rides: p[8].map(function (r) { return {t: r[0], p: flat(r[1])}; })};
+      });
+      pkState = 2;
+      req();
+    }).catch(function () { pkState = -1; });
+  }
+  function flat(a) {                       // [u, v, u, v, ...] in the Anglet frame, to map metres
+    var out = [];
+    for (var i = 0; i + 1 < a.length; i += 2) out.push(uvToM(a[i], a[i + 1]));
+    return out;
+  }
+  function peaks() {
+    var s = cam.s, a = ramp(s, 0.45, 0.6);
+    if (a <= 0) return;
+    if (!PKS) { wantPeaks(); return; }
+    var vb = viewBox(), pad = 200, lut = sat.on || dark.matches ? D.ride.d : D.ride.l, n = lut.length - 1;
+    ctx.setTransform(R, 0, 0, R, 0, 0);
+    ctx.lineJoin = "round";
+    PKS.forEach(function (p) {
+      if (p.x < vb[0] - pad || p.x > vb[2] + pad || p.y < vb[1] - pad || p.y > vb[3] + pad) return;
+      ctx.lineCap = "butt";                // the rides first, thin and faint, a colour for each half second
+      ctx.lineWidth = Math.max(1, Math.min(1.5, 0.6 + 0.4 * s));
+      ctx.globalAlpha = a * 0.58;
+      p.rides.forEach(function (r) {
+        var q = r.p, o = w2s(q[0][0], q[0][1]), c = -1;
+        for (var i = 1; i < q.length; i++) {
+          var k = Math.min(n, Math.round(Math.min((i - 0.5) * 0.25, r.t) / D.ride.dt)), e = w2s(q[i][0], q[i][1]);
+          if (k !== c) {
+            if (c >= 0) ctx.stroke();
+            ctx.beginPath();
+            ctx.strokeStyle = lut[k];
+            ctx.moveTo(o[0], o[1]);
+            c = k;
+          }
+          ctx.lineTo(e[0], e[1]);
+          o = e;
+        }
+        if (c >= 0) ctx.stroke();
+      });
+      ctx.lineCap = "round";               // the take-off zone, the outer line dashed where it's only a rough idea
+      ctx.lineWidth = 1;
       ctx.strokeStyle = C.ring;
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = C.ring;
-      for (var i = 0; i < p.n; i++) {
-        var r = Math.sqrt((i + 0.5) / p.n), t = i * 2.39996;
+      p.rings.forEach(function (ring, j) {
+        ctx.globalAlpha = a * [0.3, 0.4, 0.55][j];
+        ctx.setLineDash(j === 0 && p.lv === 2 ? [3, 3] : []);
         ctx.beginPath();
-        ctx.arc(x + 34 * r * Math.cos(t), y + 13 * r * Math.sin(t), Math.max(4, 2.5 / k), 0, 7);
-        ctx.fill();
-      }
+        ring.forEach(function (q, i) { var o = w2s(q[0], q[1]); if (i) ctx.lineTo(o[0], o[1]); else ctx.moveTo(o[0], o[1]); });
+        ctx.closePath();
+        ctx.stroke();
+      });
+      ctx.setLineDash([]);
+      ctx.globalAlpha = a * 0.9;           // the people
+      ctx.fillStyle = C.ring;
+      var r = clamp(1.2 + s * 0.7, 1.8, 2.8);
+      p.ppl.forEach(function (q) { var o = w2s(q[0], q[1]); ctx.beginPath(); ctx.arc(o[0], o[1], r, 0, 7); ctx.fill(); });
+      var o = w2s(p.x, p.y);               // the peak: a small open triangle, a summit on its contours
+      ctx.globalAlpha = a;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(o[0], o[1] - 4.5);
+      ctx.lineTo(o[0] + 4, o[1] + 2.5);
+      ctx.lineTo(o[0] - 4, o[1] + 2.5);
+      ctx.closePath();
+      ctx.stroke();
     });
     ctx.globalAlpha = 1;
   }
   var STEPS = [0.1, 0.05, 0.02, 0.01, 0.005, 0.002, 0.001];
   function grid() {
-    var s = cam.s, st = STEPS[0], i;
+    var s = cam.s, st = STEPS[0], i, vb = viewBox();
     for (i = 0; i < STEPS.length && STEPS[i] * P.ky * s >= 100; i++) st = STEPS[i];
-    var dec = st >= 0.01 ? 2 : 3, a = toLL(cam.x - W / 2 / s, cam.y - H / 2 / s), b = toLL(cam.x + W / 2 / s, cam.y + H / 2 / s);
-    var lat = [], lon = [];
+    var dec = st >= 0.01 ? 2 : 3, a = toLL(vb[0], vb[1]), b = toLL(vb[2], vb[3]), by = sat.on ? H - 26 : H;
+    var lat = [], lon = [], marks = [];
     for (i = Math.ceil(b[0] / st); i * st <= a[0]; i++) lat.push(i * st);
     for (i = Math.ceil(a[1] / st); i * st <= b[1]; i++) lon.push(i * st);
     ctx.setTransform(R, 0, 0, R, 0, 0);
@@ -418,41 +565,45 @@
     ctx.strokeStyle = C.ring;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    var ys = [], xs = [];
+    // each line labelled where it leaves the map: latitudes on the left (on the beach page, turned, at the foot) and
+    // longitudes at the foot (on the beach page on the right)
     lat.forEach(function (v) {
-      var y = (toM(v, P.lon0)[1] - cam.y) * s + H / 2;
-      if (y > 2 && y < H - 2) { ctx.moveTo(0, y); ctx.lineTo(W, y); ys.push([v, y]); }
+      var y = toM(v, P.lon0)[1], p = w2s(vb[0] - 1, y), q = w2s(vb[2] + 1, y), e = SP ? edge(p, q, 1, by) : edge(p, q, 0, 0);
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(q[0], q[1]);
+      if (e) marks.push([v.toFixed(dec) + "°N", e, SP ? "b" : "l"]);
     });
     lon.forEach(function (v) {
-      var x = (toM(P.lat0, v)[0] - cam.x) * s + W / 2;
-      if (x > 2 && x < W - 2) { ctx.moveTo(x, 0); ctx.lineTo(x, H); xs.push([v, x]); }
+      var x = toM(P.lat0, v)[0], p = w2s(x, vb[1] - 1), q = w2s(x, vb[3] + 1), e = SP ? edge(p, q, 0, W) : edge(p, q, 1, by);
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(q[0], q[1]);
+      if (e) marks.push([(-v).toFixed(dec) + "°W", e, SP ? "r" : "b"]);
     });
     ctx.stroke();
     ctx.globalAlpha = 1;
     ctx.strokeStyle = ctx.fillStyle = C.mlab;
     ctx.font = "10px " + D.mono;
     if (sat.on) { ctx.shadowColor = "rgba(0,0,0,0.7)"; ctx.shadowBlur = 3 * R; }
-    var by = sat.on ? H - 26 : H;
     ctx.textBaseline = "alphabetic";
     var taken = furn.concat(boxes);
     ctx.beginPath();
-    ys.forEach(function (q) {
-      var t = q[0].toFixed(dec) + "°N", w = ctx.measureText(t).width, bx = [12, q[1] - 8, 30 + w, q[1] + 8];
+    marks.forEach(function (k) {
+      var t = k[0], w = ctx.measureText(t).width, x = k[1][0], y = k[1][1];
+      var bx = k[2] === "l" ? [12, y - 8, 30 + w, y + 8] : k[2] === "r" ? [W - 30 - w, y - 8, W - 12, y + 8] : [x - 2, by - 18, x + 6 + w, by];
       if (hit(bx, taken)) return;
-      ctx.moveTo(14, q[1]);
-      ctx.lineTo(22, q[1]);
-      ctx.fillText(t, 26, q[1] + 3.5);
-    });
-    xs.forEach(function (q) {
-      var t = (-q[0]).toFixed(dec) + "°W", w = ctx.measureText(t).width, bx = [q[1] - 2, by - 18, q[1] + 6 + w, by];
-      if (hit(bx, taken)) return;
-      ctx.moveTo(q[1], by - 8);
-      ctx.lineTo(q[1], by);
-      ctx.fillText(t, q[1] + 4, by - 6);
+      if (k[2] === "l") { ctx.moveTo(14, y); ctx.lineTo(22, y); ctx.fillText(t, 26, y + 3.5); }
+      else if (k[2] === "r") { ctx.moveTo(W - 22, y); ctx.lineTo(W - 14, y); ctx.fillText(t, W - 26 - w, y + 3.5); }
+      else { ctx.moveTo(x, by - 8); ctx.lineTo(x, by); ctx.fillText(t, x + 4, by - 6); }
     });
     ctx.stroke();
     ctx.shadowColor = "transparent";
     ctx.shadowBlur = 0;
+  }
+  function edge(p, q, k, c) {              // where the line p-q meets x = c (k 0) or y = c (k 1), if that's on the map
+    var d = q[k] - p[k];
+    if (Math.abs(d) < 1e-9) return null;
+    var t = (c - p[k]) / d, o = [p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t];
+    return t >= 0 && t <= 1 && o[1 - k] > 2 && o[1 - k] < (k ? W : H) - 2 ? o : null;
   }
   function hit(b, list) {
     for (var i = 0; i < list.length; i++) {
@@ -468,7 +619,9 @@
     if (!e.w) { e.w = e.offsetWidth; e.h = e.offsetHeight; }
     return e;
   }
-  function measureAll() { labels.concat([call]).forEach(function (e) { e.w = 0; size(e); }); }
+  function measureAll() {
+    labels.concat([call], PKS ? PKS.map(function (p) { return p.chip; }) : []).forEach(function (e) { e.w = 0; size(e); });
+  }
   function put(e, x, y) {
     e.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
     e.style.visibility = "";
@@ -491,9 +644,10 @@
     }
     boxes = [];
     B.forEach(function (b) {
-      var d = 7 * (1 - t) - 12 * s * t;     // just on the land when far, on the beach (12 m below the high-water line) up close
-      b.sx = (b.x - cam.x) * s + W / 2 + b.ux * d;
-      b.sy = (b.y - cam.y) * s + H / 2 + b.uy * d;
+      var d = (7 * (1 - t) - 12 * s * t) / s;   // just on the land when far, on the beach (12 m below the high-water line) up close
+      var o = w2s(b.x + b.ux * d, b.y + b.uy * d);
+      b.sx = o[0];
+      b.sy = o[1];
       b.on = !(b.sx < -20 || b.sx > W + 20 || b.sy < -20 || b.sy > H + 20 || hit([b.sx - 4, b.sy - 4, b.sx + 4, b.sy + 4], furn));
       if (!b.on) { hide(b.dot); return; }
       put(b.dot, b.sx, b.sy);
@@ -503,7 +657,7 @@
     // Anglet: a bracket when far, then one name for the seven, then each beach
     var ys = ang.map(function (b) { return b.sy; }), xs = ang.map(function (b) { return b.sx; });
     var y1 = Math.min.apply(null, ys), y2 = Math.max.apply(null, ys), bx0 = Math.min.apply(null, xs) - 16;
-    if (s < 0.03) {
+    if (s < 0.03 && !SP) {
       brLine.style.height = Math.round(y2 - y1) + "px";
       put(brLine, bx0, y1);
       size(brText);
@@ -511,31 +665,45 @@
       boxes.push([bx0 - 1, y1, bx0 + 7, y2]);
     } else { hide(brLine); hide(brText); }
     var mid = ang[Math.floor(ang.length / 2)];
-    tryLabel(cluster, mid.sx + 12, mid.sy - size(cluster).h / 2, s >= 0.03 && s < 0.1);
-    if (demo && callB && s < 0.03 && W > 640) {
+    tryLabel(cluster, mid.sx + 12, mid.sy - size(cluster).h / 2, !SP && s >= 0.03 && s < 0.1);
+    if (demo && callB && s < 0.03 && W > 640 && !SP) {
       size(call);
       var cx = callB.sx - 18 - call.w, cy = callB.sy - call.h + 12;   // its pointer near the foot, clear of the next dot south
       put(call, cx, cy);
       boxes.push([cx, cy, cx + call.w + 18, cy + call.h]);
     } else hide(call);
+    chips(demo);
     B.forEach(function (b) {               // right of the dot, else left of it
       var show = b.on && (b.anglet ? s >= 0.1 : s >= 0.035), g = nr ? 10 : 9, y = b.sy - size(b.lab).h / 2;
       if (!tryLabel(b.lab, b.sx + g, y, show) && show) tryLabel(b.lab, b.sx - g - b.lab.w, y, true);
     });
     T.forEach(function (o) {
+      var p = w2s(o.x, o.y);
       size(o.lab);
-      tryLabel(o.lab, (o.x - cam.x) * s + W / 2, (o.y - cam.y) * s + H / 2 - o.lab.h * 0.8, s < 0.3);
+      tryLabel(o.lab, p[0], p[1] - o.lab.h * 0.8, s < 0.3);
     });
     PL.forEach(function (o) {
+      var p = w2s(o.x, o.y);
       size(o.lab);
-      tryLabel(o.lab, (o.x - cam.x) * s + W / 2 - o.lab.w / 2, (o.y - cam.y) * s + H / 2 - o.lab.h / 2, s >= 0.25);
+      tryLabel(o.lab, p[0] - o.lab.w / 2, p[1] - o.lab.h / 2, s >= 0.25);
     });
-    PK.forEach(function (p) {
-      if (!(demo && s >= 0.6)) { hide(p.el); return; }
-      var m = uvToM(p.u, p.v), x = (m[0] - cam.x) * s + W / 2, y = (m[1] - cam.y) * s + H / 2 - 10 * s;
-      if (x < -60 || x > W + 60 || y < -20 || y > H + 60) { hide(p.el); return; }
-      put(p.el, x, y);
-      p.el.style.opacity = ramp(s, 0.6, 0.8);
+  }
+  function chips(demo) {                   // each peak's name, range and face on a thin leader above it, else lifted, else none
+    if (!PKS) return;
+    var a = ramp(cam.s, 0.45, 0.6);
+    PKS.forEach(function (p) {
+      var o = w2s(p.x, p.y), e = size(p.chip), ok = false;
+      if (!demo || a <= 0 || o[0] < -80 || o[0] > W + 80 || o[1] < -20 || o[1] > H + 100) { hide(p.el); return; }
+      for (var i = 0; i < 2 && !ok; i++) {
+        var ld = i ? 50 : 24, bx = [o[0] - e.w / 2 - 2, o[1] - ld - e.h - 2, o[0] + e.w / 2 + 2, o[1] - 3];
+        if (bx[0] < 0 || bx[2] > W || bx[1] < 0 || hit(bx, boxes) || hit(bx, furn)) continue;
+        boxes.push(bx);
+        p.el.style.setProperty("--ld", ld + "px");
+        p.el.style.opacity = a;
+        put(p.el, o[0], o[1]);
+        ok = true;
+      }
+      if (!ok) hide(p.el);
     });
   }
   function states() {
@@ -585,10 +753,20 @@
     hintT = setTimeout(function () { hint.classList.remove("on"); }, ms || 1300);
   }
   function rel(e) { var r = host.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
-  var SKIP = ".imctl,.lgm,.mfoot,.mcred,.mcap,.imcall,.imsatcard,.imsat";   // .imsat: Apple's logo and Legal link
+  var SKIP = ".imctl,.lgm,.mfoot,.mcred,.mcap,.imcall,.imsatcard,.imsat,.fc";   // .imsat: Apple's logo and Legal link
   host.addEventListener("wheel", function (e) {
     if (!ready || e.target.closest(".imsatcard")) return;
-    if (!e.ctrlKey && !e.metaKey) { showHint(MAC ? D.hints[0] : D.hints[1]); return; }
+    if (!e.ctrlKey && !e.metaKey) {
+      if (SP && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {   // the beach page: a sideways swipe walks the shore
+        e.preventDefault();
+        stop();
+        interacted();
+        panBy(-(e.deltaMode === 1 ? e.deltaX * 33 : e.deltaMode ? e.deltaX * 600 : e.deltaX), 0);
+        return;
+      }
+      showHint(MAC ? D.hints[0] : D.hints[1]);
+      return;
+    }
     e.preventDefault();
     interacted();
     var d = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaMode ? e.deltaY * 600 : e.deltaY;
@@ -617,11 +795,12 @@
 
   var drag = null, noClick = false;
   host.addEventListener("pointerdown", function (e) {
-    if (!ready || e.pointerType === "touch" || e.button !== 0 || e.target.closest(SKIP)) return;
+    if (!ready || (e.pointerType === "touch" && !SP) || e.button !== 0 || e.target.closest(SKIP)) return;   // the beach page takes a finger sideways
     drag = {id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, moved: false, v: []};
   });
   window.addEventListener("pointermove", function (e) {
     if (!drag || e.pointerId !== drag.id) return;
+    if (touchOn) { drag = null; host.classList.remove("drag"); return; }   // two fingers: the pinch has it
     if (!drag.moved) {
       if (Math.abs(e.clientX - drag.x0) + Math.abs(e.clientY - drag.y0) < 4) return;
       drag.moved = true;
@@ -670,9 +849,8 @@
       touchOn = true;
       tap = null;
       var a = e.touches[0], b = e.touches[1], r = host.getBoundingClientRect();
-      var mx = (a.clientX + b.clientX) / 2 - r.left, my = (a.clientY + b.clientY) / 2 - r.top;
-      tp = {d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1, s: cam.s, r: r,
-            wx: cam.x + (mx - W / 2) / cam.s, wy: cam.y + (my - H / 2) / cam.s};
+      var mx = (a.clientX + b.clientX) / 2 - r.left, my = (a.clientY + b.clientY) / 2 - r.top, w = s2w(mx, my);
+      tp = {d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1, s: cam.s, r: r, wx: w[0], wy: w[1]};
     } else if (e.touches.length === 1 && !tp) {
       tap = e.target.closest(SKIP) ? null : {x: e.touches[0].clientX, y: e.touches[0].clientY, moved: false};
     }
@@ -683,14 +861,14 @@
       e.preventDefault();
       var a = e.touches[0], b = e.touches[1], r = tp.r;
       var mx = (a.clientX + b.clientX) / 2 - r.left, my = (a.clientY + b.clientY) / 2 - r.top;
-      var s = clamp(tp.s * (Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1) / tp.d, home.s, SMAX);
-      if (s > SREG && tp.s <= SREG + 1e-9 && !sat.on && !inFrame(tp.wx, tp.wy)) s = SREG;
-      set({x: tp.wx - (mx - W / 2) / s, y: tp.wy - (my - H / 2) / s, s: s});
+      var s = clamp(tp.s * (Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1) / tp.d, zmin, SMAX);
+      if (!SP && s > SREG && tp.s <= SREG + 1e-9 && !sat.on && !inFrame(tp.wx, tp.wy)) s = SREG;
+      set(at(tp.wx, tp.wy, mx, my, s));
     } else if (tap && e.touches.length === 1 && !tap.moved) {
       var t = e.touches[0];
       if (Math.abs(t.clientX - tap.x) + Math.abs(t.clientY - tap.y) > 10) {
         tap.moved = true;
-        showHint(D.hints[2]);
+        if (!SP) showHint(D.hints[2]);
       }
     }
   }, {passive: false});
@@ -731,12 +909,12 @@
     if (!b || !ready) return;
     interacted();
     if (b === satBtn) {
-      if (sat.on) satOff(); else if (satAsked()) satOn(); else satAsk();
+      if (sat.on) satOff(); else if (satChoice() === "yes") satOn(); else satAsk();
       return;
     }
-    if (b === satOnly) {
-      try { localStorage.removeItem(SAT_KEY); } catch (err) { /* nothing stored */ }
-      satOff();
+    if (b === satOnly) {                    // consent withdrawn: kept as a "no", and MapKit's map goes at once
+      satKeep("no");
+      satDrop();
       satBtn.focus({preventScroll: true});
       return;
     }
@@ -763,18 +941,42 @@
       fly({x: (gx0 + gx1) / 2, y: (gy0 + gy1) / 2, s: gs});
       return;
     }
-    // fly to the beach (close enough for its peaks where Demo has some), or open its page once there
-    var close = !inFrame(b.x, b.y) ? (sat.on ? 0.45 : 0.12) : root.hasAttribute("data-demo") && b.slug === DM.peaksAt ? 0.9 : 0.45;
+    if (SP) {                              // the beach page: along the shore to that beach, or its waitlist
+      if (SP.m[b.slug]) goBeach(b.slug); else if (b.href) window.location.href = b.href;
+      return;
+    }
+    // fly to the beach (close enough for its peaks in Demo), or open its page once there
+    var close = !inFrame(b.x, b.y) ? (sat.on ? 0.45 : 0.12) : root.hasAttribute("data-demo") && b.anglet ? 0.9 : 0.45;
     var cx = b.x - b.ux * 40, cy = b.y - b.uy * 40;
     if (cam.s < close * 0.7 || Math.hypot(cx - cam.x, cy - cam.y) * cam.s > Math.min(W, H) / 3) fly({x: cx, y: cy, s: Math.max(close, cam.s)});
     else if (b.href) window.location.href = b.href;
   });
 
+  host.addEventListener("imap:goto", function (e) {   // the beach page's "Also good now"
+    var k = e.detail && e.detail.slug;
+    if (!SP || !SP.m[k]) return;
+    if (!ready) { setBeach(k); cam = {x: home.x, y: home.y, s: home.s}; req(); return; }
+    interacted();
+    goBeach(k);
+  });
+
   // ---------------------------------------------------------------- Apple's satellite view, loaded only when asked for
   // Nothing goes to Apple until someone picks it on the card; the pick stays in this browser. Our map fades out over
-  // Apple's, which follows our camera; the dots, names, peaks and grid stay ours.
-  var SAT_KEY = "obsurf.satellite";        // only a yes is kept; "Not now" asks again next time
-  function satAsked() { try { return localStorage.getItem(SAT_KEY) === "yes"; } catch (e) { return false; } }
+  // Apple's, which follows our camera; the dots, names, peaks and grid stay ours. Both answers are kept 6 months, as
+  // "yes" or "no" and the day, then the card asks again (legal, 30 Oct 2026); Privacy's switch writes the same key.
+  var SAT_KEY = "obsurf.satellite", SAT_DAYS = 183;
+  function satChoice() {
+    try {
+      var m = /^(yes|no) (\d{4}-\d\d-\d\d)$/.exec(localStorage.getItem(SAT_KEY) || "");
+      if (m && (Date.now() - Date.parse(m[2])) / 864e5 < SAT_DAYS) return m[1];
+      if (localStorage.getItem(SAT_KEY) !== null) localStorage.removeItem(SAT_KEY);   // too old, or a yes from before
+    } catch (e) { /* nothing stored */ }
+    return "";
+  }
+  function satKeep(v) { try { localStorage.setItem(SAT_KEY, v + " " + new Date().toISOString().slice(0, 10)); } catch (e) { /* asked again next time */ } }
+  window.addEventListener("storage", function (e) {    // switched off on Privacy, in another tab
+    if ((e.key === SAT_KEY || e.key === null) && sat.st && satChoice() !== "yes") satDrop();
+  });
   function satAsk() {
     if (!satCard) {
       satCard = document.createElement("div");
@@ -782,30 +984,32 @@
       satCard.tabIndex = -1;
       satCard.setAttribute("role", "dialog");
       satCard.setAttribute("aria-labelledby", "imsat-t");
-      satCard.setAttribute("aria-describedby", "imsat-d");
-      satCard.innerHTML = '<b id="imsat-t"></b><p id="imsat-d"></p><small></small> <a></a>' +
-        '<div class="row"><button type="button" data-s="ok"></button><button type="button" data-s="no"></button></div>';
+      satCard.setAttribute("aria-describedby", "imsat-d imsat-k");
+      satCard.innerHTML = '<b id="imsat-t"></b><p id="imsat-d"></p><p><small id="imsat-k"></small></p>' +
+        '<div class="row"><button type="button" data-s="ok"></button><button type="button" data-s="no"></button></div>' +
+        '<p class="aft"><small></small> <a></a></p>';
       satCard.querySelector("b").textContent = SAT.title;
-      satCard.querySelector("p").textContent = SAT.card;
-      satCard.querySelector("small").textContent = SAT.small;
-      satCard.querySelector("a").textContent = SAT.link;
-      satCard.querySelector("a").href = SAT.href;
+      satCard.querySelector("#imsat-d").textContent = SAT.card;
+      satCard.querySelector("#imsat-k").textContent = SAT.small;
+      satCard.querySelector(".aft small").textContent = SAT.after;
+      satCard.querySelector(".aft a").textContent = SAT.link;
+      satCard.querySelector(".aft a").href = SAT.href;
       satCard.querySelector("[data-s=ok]").textContent = SAT.ok;
       satCard.querySelector("[data-s=no]").textContent = SAT.no;
       satCard.addEventListener("click", function (e) {
         var b = e.target.closest("button");
         if (!b) return;
         satClose();
-        if (b.getAttribute("data-s") !== "ok") return;
-        try { localStorage.setItem(SAT_KEY, "yes"); } catch (err) { /* asked again next time */ }
-        satOn();
+        var yes = b.getAttribute("data-s") === "ok";
+        satKeep(yes ? "yes" : "no");
+        if (yes) satOn();
       });
       satCard.addEventListener("keydown", function (e) { if (e.key === "Escape") { e.preventDefault(); satClose(); } });
       host.appendChild(satCard);
     }
     satCard.hidden = false;
-    satCard.focus({preventScroll: true});
-    req();                                  // the info card steps aside while this one asks   // the card, not a button: neither answer is picked for you
+    satCard.focus({preventScroll: true});   // the card, not a button: neither answer is picked for you
+    req();                                  // the info card steps aside while this one asks
   }
   function satClose() {
     if (!satCard || satCard.hidden) return;
@@ -820,6 +1024,7 @@
     satBtn.setAttribute("aria-pressed", "true");
     satOnly.hidden = false;
     host.classList.add("sat");
+    box.classList.add("sat");
     colours();
     furnDirty = true;
     if (sat.st === 2) { sat.t = performance.now(); sat.last = ""; req(); return; }
@@ -866,6 +1071,11 @@
       satFail();
       return;
     }
+    if (SP) {
+      var d0 = sat.map.cameraDistance;
+      sat.k = d0 > 0 ? d0 * cam.s / H : 0;
+      if (!sat.k) { satFail(); return; }
+    }
     clearTimeout(sat.timer);
     sat.st = 2;
     satBtn.classList.remove("busy");
@@ -888,11 +1098,23 @@
     showHint(SAT.error, 3500);
     satLive.textContent = SAT.error;
   }
+  function satDrop() {                    // withdrawn: Apple's map is destroyed at once, so MapKit has nothing left to ask for
+    if (sat.on) satOff();
+    clearTimeout(sat.timer);
+    if (sat.map) { try { sat.map.destroy(); } catch (e) { /* already gone */ } }
+    if (sat.el) sat.el.remove();
+    sat.el = sat.map = null;
+    sat.st = 0;
+    sat.f = 0;
+    satBtn.classList.remove("busy");
+    req();
+  }
   function satOff() {
     sat.on = false;
     satBtn.setAttribute("aria-pressed", "false");
     satOnly.hidden = true;
     host.classList.remove("sat");
+    box.classList.remove("sat");
     colours();
     furnDirty = true;
     sat.t = performance.now();
@@ -916,7 +1138,12 @@
     var key = [cam.x.toFixed(1), cam.y.toFixed(1), cam.s.toPrecision(6), W, H].join();
     if (key === sat.last) return;
     sat.last = key;
-    sat.map.setRegionAnimated(satRegion(), false);
+    if (SP) {
+      var M = window.mapkit, c = toLL(cam.x, cam.y);
+      sat.map.rotation = SAT_TURN;
+      sat.map.center = new M.Coordinate(c[0], c[1]);
+      sat.map.cameraDistance = sat.k * H / cam.s;
+    } else sat.map.setRegionAnimated(satRegion(), false);
   }
 
   // ---------------------------------------------------------------- start
@@ -931,6 +1158,7 @@
   host.classList.add("im");                 // dots and names from here on: the drawn map's own hide
   measure();
   cam = {x: home.x, y: home.y, s: home.s};
+  if (SP) setBeach(cur);
   colours();
   states();
   furniture();
@@ -940,6 +1168,6 @@
   if (window.ResizeObserver) new ResizeObserver(resize).observe(host);
   window.addEventListener("resize", resize);
   new MutationObserver(states).observe(root, {attributes: true, attributeFilter: ["data-demo"]});
-  var dark = window.matchMedia("(prefers-color-scheme: dark)"), recolour = function () { colours(); req(); };
+  var recolour = function () { colours(); req(); };
   if (dark.addEventListener) dark.addEventListener("change", recolour); else if (dark.addListener) dark.addListener(recolour);
 })();

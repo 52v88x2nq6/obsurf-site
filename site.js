@@ -29,6 +29,7 @@
     document.querySelectorAll("fieldset.lockable").forEach(function (f) { f.disabled = !on; });
     document.querySelectorAll("[data-honest]").forEach(function (el) { el.hidden = on; });
     filterBeaches();
+    fitTips();
   }
   function setDemo(on) {
     var previous = document.activeElement;
@@ -39,7 +40,7 @@
       if (control) control.focus();
     }
     var status = document.getElementById("demo-status");
-    if (status) status.textContent = on ? "Demo on. Figures are illustrations, not data. Forms send nothing." : "Demo off. Example figures are hidden.";
+    if (status) status.textContent = on ? "Demo on. Every figure is an example. Forms send nothing." : "Demo off. Example figures are hidden.";
   }
 
   var toastTimer;
@@ -59,7 +60,7 @@
     return Math.sqrt(x * x + y * y) * 6371;
   }
   function norm(s) { return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim(); }
-  function filterBeaches() {
+  function filterBeaches(typed) {
     var list = document.querySelector(".blist"), input = document.getElementById("bq");
     if (!list || !input) return;
     var q = norm(input.value), shown = 0, items = Array.prototype.slice.call(list.children);
@@ -78,27 +79,94 @@
     }
     var none = document.getElementById("noresult");
     if (none) none.hidden = shown > 0;
+    if (typed) say(!q ? "All " + shown + " beaches shown." : shown ? shown + (shown === 1 ? " beach matches." : " beaches match.") :
+                   "No beach matches. We start on the Basque coast; you can ask for yours on the roadmap.");
+  }
+  // Spots says what the search and "near me" did in one polite status line (WCAG 4.1.3), once typing pauses
+  var sayTimer = 0;
+  function say(msg, now) {
+    var st = document.getElementById("bstatus");
+    if (!st) return;
+    clearTimeout(sayTimer);
+    sayTimer = setTimeout(function () { st.textContent = msg; }, now ? 0 : 700);
   }
   function near() {
     var note = document.getElementById("nearnote");
-    if (!navigator.geolocation) { if (note) note.textContent = "Your browser can't share a location."; return; }
+    function tell(msg) { if (note) note.textContent = msg; say(msg, true); }
+    if (!navigator.geolocation) { tell("Your browser can't share a location."); return; }
     navigator.geolocation.getCurrentPosition(function (p) {
       origin = [p.coords.latitude, p.coords.longitude];
-      if (note) note.textContent = "Sorted by distance from you. Your location wasn't sent or stored.";
       filterBeaches();
+      tell("Sorted by distance from you. Your location wasn't sent or stored.");
     }, function () {
-      if (note) note.textContent = "No location shared, so the list keeps its order.";
+      tell("No location shared, so the list keeps its order.");
     }, { maximumAge: 600000, timeout: 10000 });
   }
 
-  // spot page: the drawn plan or the aerial photo (its image loads the first time it's picked)
-  function layer(k) {
-    var stage = document.querySelector(".stage");
-    if (!stage) return;
-    stage.setAttribute("data-layer", k);
-    stage.querySelectorAll("button[data-layer]").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-layer") === k ? "true" : "false"); });
-    var img = stage.querySelector("image[data-href]");
-    if (k === "sat" && img && !img.getAttribute("href")) img.setAttribute("href", img.getAttribute("data-href"));
+  // a "?": its words show on hover or focus, and a tap keeps them open until the next tap, a tap elsewhere or Escape
+  function closeTips() { document.querySelectorAll(".tipw.on").forEach(function (w) { w.classList.remove("on"); }); }
+  // Escape hides whatever words show, a face's too, and they stay hidden while the pointer or focus stays there
+  // (WCAG 1.4.13): leaving, or tapping the "?" again, brings them back
+  function dismissTips() {
+    document.querySelectorAll(".tipw").forEach(function (w) {
+      if (w.classList.contains("on") || w.matches(":hover") || w.contains(document.activeElement)) w.classList.add("x");
+      w.classList.remove("on");
+    });
+    document.querySelectorAll(".fc").forEach(function (f) { if (f.matches(":hover") || f === document.activeElement) f.classList.add("x"); });
+  }
+  ["pointerout", "focusout"].forEach(function (type) {
+    document.addEventListener(type, function (e) {
+      var el = e.target.closest && e.target.closest(".tipw.x, .fc.x");
+      if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) el.classList.remove("x");
+    });
+  });
+  // and stays inside the window: shifted sideways where its corner would take it past an edge, and when it's about to
+  // show (up), below its "?" if there's no room above
+  function fitTip(t, up) {
+    t.style.translate = "";
+    if (up) t.classList.remove("dn");
+    var b = t.getBoundingClientRect(), W = document.documentElement.clientWidth;
+    if (!b.width) return;
+    var dx = b.left < 8 ? 8 - b.left : b.right > W - 8 ? W - 8 - b.right : 0;
+    if (dx) t.style.translate = Math.round(dx) + "px 0";
+    if (up && b.top < 8) t.classList.add("dn");
+  }
+  function fitTips() { document.querySelectorAll(".tip").forEach(fitTip); }
+  var fitting = 0;
+  window.addEventListener("resize", function () {
+    if (!fitting) fitting = requestAnimationFrame(function () { fitting = 0; fitTips(); });
+  });
+  document.addEventListener("ob:parts", fitTips);           // the beach page swapped in another beach's figures
+  window.addEventListener("load", fitTips);
+  window.addEventListener("storage", function (e) { if (e.key === SAT_KEY || e.key === null) satShow(false); });
+  ["pointerover", "focusin"].forEach(function (type) {
+    document.addEventListener(type, function (e) {
+      var w = e.target.closest && e.target.closest(".tipw"), t = w && w.querySelector(".tip");
+      if (t) fitTip(t, true);
+    });
+  });
+
+  // Privacy: the satellite view's switch (legal, 30 Oct 2026). It keeps the same answer as the maps' card, in the same
+  // place: "yes" or "no" and the day, for 6 months (map.js). Switching it off in one tab takes Apple's map away in the
+  // others (map.js listens for the change).
+  var SAT_KEY = "obsurf.satellite", SAT_DAYS = 183;
+  function satChoice() {
+    try {
+      var m = /^(yes|no) (\d{4}-\d\d-\d\d)$/.exec(localStorage.getItem(SAT_KEY) || "");
+      if (m && (Date.now() - Date.parse(m[2])) / 864e5 < SAT_DAYS) return m[1];
+    } catch (e) { /* nothing stored */ }
+    return "";
+  }
+  function satKeep(v) { try { localStorage.setItem(SAT_KEY, v + " " + new Date().toISOString().slice(0, 10)); } catch (e) { /* not kept */ } }
+  function satShow(said) {
+    var b = document.getElementById("satsw"), st = document.getElementById("satsw-s");
+    if (!b) return;
+    var on = satChoice() === "yes";
+    b.setAttribute("aria-checked", on ? "true" : "false");
+    document.getElementById("satsw-v").textContent = on ? "on" : "off";   // the switch reads "Satellite view: on/off" (legal)
+    document.getElementById("satpref").hidden = false;     // the switch needs scripts, so it shows only with them
+    if (st) st.textContent = on ? "On. Satellite on a map loads Apple's view without asking first, for 6 months."
+      : (said ? "Off. Nothing loads from Apple unless you choose it again." : "");
   }
 
   // "Already asked?" on the request page
@@ -131,6 +199,7 @@
   }
 
   document.addEventListener("click", function (e) {
+    if (!e.target.closest(".tipw")) closeTips();
     var t = e.target.closest("button, a");
     if (!t) return;
     if (t.classList.contains("demo-switch")) { setDemo(t.getAttribute("aria-checked") !== "true"); return; }
@@ -146,7 +215,14 @@
       return;
     }
     if (t.id === "near") { near(); return; }
-    if (t.hasAttribute("data-layer")) { layer(t.getAttribute("data-layer")); return; }
+    if (t.classList.contains("qm")) {
+      var tw = t.closest(".tipw"), open = !tw.classList.contains("on") || tw.classList.contains("x");
+      closeTips();
+      tw.classList.remove("x");
+      tw.classList.toggle("on", open);
+      return;
+    }
+    if (t.id === "satsw") { satKeep(t.getAttribute("aria-checked") === "true" ? "no" : "yes"); satShow(true); return; }
     if (t.hasAttribute("data-copy")) {
       var url = t.getAttribute("data-copy");
       if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { toast("Link copied: " + url); }, function () { toast(url); });
@@ -192,6 +268,7 @@
       tabs[i].focus();
     }
     if (e.key === "Escape") {
+      dismissTips();
       var menu = document.querySelector('.menu[aria-expanded="true"]');
       if (menu && (e.target === menu || e.target.closest("#mainnav"))) {
         menu.setAttribute("aria-expanded", "false");
@@ -201,7 +278,7 @@
     }
   });
   document.addEventListener("input", function (e) {
-    if (e.target.id === "bq") filterBeaches();
+    if (e.target.id === "bq") filterBeaches(true);
     if (e.target.id === "rq-t") asked();
   });
   document.addEventListener("change", function (e) { if (e.target.name === "topic") topic(); });
@@ -215,6 +292,7 @@
     if (tp) { var r = document.querySelector('.topics input[value="' + tp.replace(/[^a-z]/g, "") + '"]'); if (r) r.checked = true; }
     apply(stored());
     topic();
+    satShow(false);
     if (p.get("near") === "1" && document.getElementById("near")) near();
   });
 })();

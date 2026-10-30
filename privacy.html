@@ -20,11 +20,11 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="banner" role="region" aria-label="Demo mode"><div class="wrap">
-  <span><b>Demo mode.</b> Every figure on this page is an illustration, not data.</span>
+  <span><b>Demo mode.</b> Every figure on this page is an example.</span>
   <button type="button" class="demo-off">Turn off</button>
 </div></div>
 <p id="demo-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
-<p id="demo-hint" hidden>Shows example figures, each marked "Illustration, not data". Nothing is real while it's on.</p>
+<p id="demo-hint" hidden>Shows example figures. Nothing is real while it's on.</p>
 <header class="nav wrap">
   <a href="index.html" class="logo" aria-label="ob.surf, home">ob.surf</a><span class="beta">Beta</span>
   <nav aria-label="Main" id="mainnav"><a href="spots.html">Spots</a><a href="how-it-works.html">How it works</a><a href="roadmap.html">Roadmap</a></nav>
@@ -39,13 +39,24 @@
   <div class="phead"><div class="m">ob.surf/privacy</div><h1>Privacy</h1></div>
   <article class="prose"><p>This page covers this website only. The privacy notice for the app and for accounts is published here before sign-up opens.</p>
 <h2>What this website keeps</h2>
-<ul><li><b>Nothing about you.</b> No cookies, no analytics, no trackers, no ads, and nothing loaded from other sites.</li>
-<li><b>Forms send nothing.</b> The contact, request and waitlist forms are not connected yet. What you type stays on your screen.</li>
-<li><b>One setting in your browser.</b> Whether Demo is on is stored on your own device, so it stays on as you move between pages. Turn it off, or clear this site's data, to remove it.</li>
-<li><b>Your location, only if you ask.</b> "Show beaches near me" asks your browser for your location to sort the list once. It stays in your browser: we never receive or store it.</li></ul>
-<h2>Our host</h2>
-<p>Like any website, the company that hosts these pages keeps short technical logs, such as IP addresses and the pages requested, to deliver and protect the site. Its details are in the <a href="legal.html">Legal notice</a>.</p>
-<h2>Questions</h2>
+<ul><li><b>No cookies, no analytics, no trackers, no ads.</b> The pages load no fonts, scripts or images from other sites, except Apple's satellite view, when you ask for it (<a href="#satellite">below</a>).</li>
+<li><b>What we store in your browser.</b> Two items, each only after you act, both in local storage. They hold your own choices, so they need no separate consent:
+<ul><li><code>obsurf-demo</code> ("1" or "0"), when you flip the demo switch;</li>
+<li><code>obsurf.satellite</code> ("yes" or "no" and the day you answered), when you answer the satellite card, choose "Use drawn map only" or use the switch below. After 6 months it no longer counts and the card asks again.</li></ul></li>
+<li><b>Your location, only if you ask.</b> "Show beaches near me" asks your browser for your location to sort the list once. It stays in your browser: we never receive or store it.</li>
+<li><b>Forms send nothing.</b> The contact, request and waitlist forms are not connected yet. What you type stays on your screen. When the forms start sending, they will go to our own servers in Paris, which use your IP address to answer each request and never store it. This page will say so when it happens.</li></ul>
+<h2>Who sees your data</h2>
+<ul><li><b>Hosting.</b> The site is served by GitHub Pages: GitHub, Inc. (United States), with its CDN provider Fastly. To deliver each page they receive your IP address, the page you ask for, your browser's details (user agent) and the site you came from, and GitHub keeps security logs of IP addresses. We don't receive these logs. Purpose: serving the pages and keeping them secure. Legal basis: legitimate interest (art. 6(1)(f)); you can object by writing to us (<a href="#questions">Questions</a>). Transfer to the United States: under the EU-U.S. Data Privacy Framework (art. 45). Retention: as GitHub sets it in its <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">privacy statement</a>. No consent is needed for this.</li>
+<li id="satellite"><b>Satellite view, only if you ask.</b> Nothing is loaded from Apple until you tap Satellite and then "Load satellite view", or switch it on below. Your browser then contacts three Apple MapKit servers. They receive:
+<ul><li>your IP address and our site's address;</li>
+<li>the satellite images your browser requests, which show the area you view;</li>
+<li>once for each page that shows the satellite view, MapKit's own usage report: browser and version, operating system, language, light or dark mode, screen and window size, our Apple developer id, the map area rounded to whole degrees, zoom, map type and a random id for that page.</li></ul>
+<p>The legal basis is your consent, given by that tap. In the EEA, the UK and Switzerland, Apple Distribution International Ltd (Ireland) is responsible for this data. Apple may transfer it to Apple Inc. in the US under the European Commission's Standard Contractual Clauses (GDPR art. 46(2)(c)). Apple will give you a copy on request. See Apple's <a href="https://www.apple.com/legal/privacy/en-ww/">Privacy Policy</a>. By loading MapKit, ob.surf shares responsibility with Apple for sending your data to Apple; what happens to it afterwards is Apple's decision alone, under its own privacy policy. Measured on 30 October 2026: nothing stored. MapKit set no cookies and left nothing in your browser's storage; the one thing kept is your answer, listed under What we store in your browser.</p>
+<p>We remember your answer, "Load satellite view" or "Not now", on this device for 6 months, then ask again.</p>
+<p>To withdraw your consent, tap "Use drawn map only" on a map, or switch the satellite view off here. Apple's map goes at once and MapKit sends nothing more (measured on 30 October 2026); it won't load again unless you choose it again. Data already sent stays with Apple, under its policy.</p>
+<p class="satpref" id="satpref" hidden><button type="button" class="satsw" id="satsw" role="switch" aria-checked="false" aria-label="Satellite view"><span class="sw" aria-hidden="true"></span><span>Satellite view: <span id="satsw-v">off</span></span></button> <span class="sub" id="satsw-s" role="status" aria-live="polite"></span></p></li>
+<li><b>Links to other sites</b> (wave data, open data, licences, privacy policies, email) contact nothing until you click them.</li></ul>
+<h2 id="questions">Questions</h2>
 <p>Email <a href="mailto:leo@ob.surf">leo@ob.surf</a>. We use what you send only to answer you. You can also complain to your data protection authority. In France that's the CNIL (cnil.fr).</p></article>
 </div>
 </main>
