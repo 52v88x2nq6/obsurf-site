@@ -264,6 +264,10 @@ html[data-demo] .honest-only{display:none}
 .blist .st{margin-left:auto;text-align:right;font-size:13px;color:var(--sub);display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .blist .st b{font-weight:600;color:var(--text);font-size:14px;display:inline-flex;align-items:center;gap:6px}
 .blist .km{font-family:ui-monospace,"SF Mono","Geist Mono",Menlo,Consolas,monospace;font-size:11px;color:var(--lab)}
+/* each beach's 3D block from its model, one scale for all 17 */
+.blist .blk{flex:none;display:block;width:104px}
+.blist .blk img{display:block;width:100%;height:auto}
+@media (max-width:600px){.blist .blk{width:60px}}
 .empty{padding:18px 2px;color:var(--sub);font-size:15px}
 /* the beach page: the coast map turned to look out to sea, the title on it and the figures below (Leo, 26 Oct 2026) */
 .sv{position:relative}
